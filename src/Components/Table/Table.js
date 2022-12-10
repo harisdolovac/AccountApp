@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-const Table = ({ embroideryForm, handleEdit }) => {
+const Table = ({ embroideryForm, handleEdit, handleDelete }) => {
 
     const [totalAmount, setTotalAmount] = useState(0)
 
@@ -16,7 +16,9 @@ const Table = ({ embroideryForm, handleEdit }) => {
                 <td >{numberOfEmbroidery}</td>
                 <td>{price}</td>
                 <td><b>{numberOfEmbroidery * price}</b></td>
-                <td><button onClick={(e) => handleEdit(e)} id={id}>Edit</button></td>
+                <td><button onClick={(e) => handleEdit(e)} id={id}>Edit</button>
+                    <button onClick={(e) => handleDelete(e)} id={id}>Delete</button>
+                </td>
             </tr>
         )
 

@@ -59,6 +59,11 @@ function App() {
 
   }
 
+  const handleDelete = (e) => {
+    let newForm = embroideryForm.filter((item) => item.id !== +e.target.id)
+    setEmbroideryForm(newForm)
+  }
+
 
   return (
     <div className="App">
@@ -87,7 +92,7 @@ function App() {
           </div >
 
 
-          <Table embroideryForm={embroideryForm} handleEdit={handleEdit} />
+          <Table embroideryForm={embroideryForm} handleEdit={handleEdit} handleDelete={handleDelete} />
 
         </div >
       </div >
