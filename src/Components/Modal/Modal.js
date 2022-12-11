@@ -10,7 +10,7 @@ const Modal = ({ modal, handleConfrmDelete, handleCancleDelete }) => {
             <div className="ModalWrapper">
                 <div className="Modal">
                     <div>
-                        <h1>Do you realy wanna delete file</h1>
+                        <p className="ModalHeader">Do you realy wanna delete file:</p >
                         <h2>{deletedItem.nameEmbroidery}</h2>
                         <div className="modalButtons">
                             <button onClick={handleConfrmDelete}>Confirm</button>

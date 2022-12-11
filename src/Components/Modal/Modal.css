@@ -1,5 +1,5 @@
 .ModalWrapper {
-    /* height: 100vh; */
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -7,15 +7,36 @@
 }
 
 .Modal {
-    width: 33%;
-    height: 33%;
     background-color: brown;
     display: flex;
     justify-content: space-around;
     align-items: center;
+    padding: 10px;
+}
+
+.ModalHeader {
+    font-size: 2rem;
+    font-weight: bolder;
+    line-height: normal;
 }
 
 .modalButtons {
     display: flex;
     justify-content: space-around;
+}
+
+.modalButtons>button {
+    color: white;
+    background-color: red;
+    margin: 10px;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.modalButtons>button:hover {
+    color: red;
+    background-color: white;
+    margin: 10px;
+    padding: 5px;
 }
