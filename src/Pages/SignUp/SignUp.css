@@ -1,0 +1,7 @@
+.SignUpWrapper {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(73, 30, 182, 0.751);
+}

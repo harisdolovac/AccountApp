@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import "./Table.css"
 
-const Table = ({ embroideryForm, handleEdit, handleDelete, handleDetails }) => {
+const Table = ({ embroideryForm, handleEdit, handleDelete }) => {
 
     const [totalAmount, setTotalAmount] = useState(0)
+
 
     const embroideryTable = embroideryForm.map((element, i) => {
         const { nameEmbroidery, numberOfEmbroidery, price, id } = element
 
 
-
         return (
             <tr key={nameEmbroidery + i}>
                 <td>{i + 1}</td>
-                <td onClick={handleDetails} >{nameEmbroidery}</td>
+                <td ><Link to={`/details/${id}`} state={{ embroideryForm }}>{nameEmbroidery}</Link></td>
                 <td >{numberOfEmbroidery}</td>
                 <td>{price}</td>
                 <td><b>{numberOfEmbroidery * price}</b></td>
@@ -24,18 +26,8 @@ const Table = ({ embroideryForm, handleEdit, handleDelete, handleDetails }) => {
 
     })
 
-    const fill = new Array(1).fill(0).map((item, i) => {
-        return (
-            <tr key={i}>
-                <td>{i + 1}</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
 
-            </tr>
-        )
-    })
+
 
 
     let calculateAmount = embroideryForm.reduce((sum, item) => sum += item.price * item.numberOfEmbroidery, 0)
@@ -45,12 +37,12 @@ const Table = ({ embroideryForm, handleEdit, handleDelete, handleDetails }) => {
     }, [embroideryForm])
 
 
-
     return (
         <div>
 
             <table className='table_App'>
                 <tbody>
+
                     <tr className='tableRow__App'>
                         <th>Br.</th>
                         <th>Naziv Veza</th>
@@ -59,7 +51,7 @@ const Table = ({ embroideryForm, handleEdit, handleDelete, handleDetails }) => {
                         <th>Ukupuno</th>
                         <th>Uredjivanje</th>
                     </tr>
-                    {embroideryTable.length ? (embroideryTable) : (fill)}
+                    {embroideryTable.length ? (embroideryTable) : (<tr><th>Popuni polja iznad</th></tr>)}
 
                 </tbody>
             </table>

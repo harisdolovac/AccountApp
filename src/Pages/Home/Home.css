@@ -24,15 +24,3 @@ input {
     display: flex;
     flex-direction: column;
 }
-
-.table_App {
-    width: 80%;
-    background-color: blueviolet;
-    border: 3px solid black;
-}
-
-table,
-th,
-td {
-    border: 1px solid black;
-}

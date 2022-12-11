@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 
 import './Home.css';
 
-import Modal from '../../../Components/Modal/Modal';
-import Table from '../../../Components/Table/Table';
+import Modal from '../../Components/Modal/Modal';
+import Table from '../../Components/Table/Table';
 
 
 function Home() {
@@ -18,7 +18,6 @@ function Home() {
     const [embroideryNames, setEmbroideryNames] = useState(initailValues)
     const [embroideryForm, setEmbroideryForm] = useState([])
     const [editForm, setEditForm] = useState(null)
-    const [detailsPage, setDetailsPage] = useState(false)
     const [modal, setModal] = useState({ modal: false, deletedItem: {} })
 
 
@@ -67,9 +66,6 @@ function Home() {
     }
 
 
-    const handleDetails = () => {
-
-    }
 
     return (
         <>
@@ -99,7 +95,7 @@ function Home() {
                                         </div>
                                     </form>
                                 </div >
-                                <Table embroideryForm={embroideryForm} handleEdit={handleEdit} handleDelete={handleDelete} handleDetails={handleDetails} />
+                                <Table embroideryForm={embroideryForm} handleEdit={handleEdit} handleDelete={handleDelete} />
                             </div >
                         </div >
                     </div >
