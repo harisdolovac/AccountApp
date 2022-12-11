@@ -1,0 +1,21 @@
+.ModalWrapper {
+    /* height: 100vh; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.Modal {
+    width: 33%;
+    height: 33%;
+    background-color: brown;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.modalButtons {
+    display: flex;
+    justify-content: space-around;
+}

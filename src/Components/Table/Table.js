@@ -24,7 +24,7 @@ const Table = ({ embroideryForm, handleEdit, handleDelete }) => {
 
     })
 
-    const fill = new Array(5).fill(0).map((item, i) => {
+    const fill = new Array(1).fill(0).map((item, i) => {
         return (
             <tr key={i}>
                 <td>{i + 1}</td>
@@ -32,9 +32,11 @@ const Table = ({ embroideryForm, handleEdit, handleDelete }) => {
                 <td></td>
                 <td></td>
                 <td></td>
+
             </tr>
         )
     })
+
 
     let calculateAmount = embroideryForm.reduce((sum, item) => sum += item.price * item.numberOfEmbroidery, 0)
 
