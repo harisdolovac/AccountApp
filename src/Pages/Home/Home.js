@@ -10,12 +10,15 @@ function Home() {
 
     const initailValues = {
         nameEmbroidery: "",
+        nameCompany: "",
+        selectCompany: "",
         numberOfEmbroidery: 0,
         price: 0,
         id: null,
     }
 
     const [embroideryNames, setEmbroideryNames] = useState(initailValues)
+    const [companyForm, setCompanyForm] = useState([])
     const [embroideryForm, setEmbroideryForm] = useState([])
     const [editForm, setEditForm] = useState(null)
     const [modal, setModal] = useState({ modal: false, deletedItem: {} })
@@ -65,15 +68,39 @@ function Home() {
         setModal(prev => ({ ...prev, modal: false }))
     }
 
+    const submitCompanyForm = (e) => {
+        e.preventDefault()
+        setCompanyForm((prev) => [...prev, embroideryNames.nameCompany])
+        setEmbroideryNames((prev) => ({ ...prev, nameCompany: "" }))
 
+    }
+    const handleCompanyName = (e) => {
+        setEmbroideryNames((prev) => ({ ...prev, selectCompany: e.target.value }))
+    }
+
+    const handleInputCompanyName = (e) => {
+        setEmbroideryNames((prev) => ({ ...prev, nameCompany: e.target.value }))
+    }
 
     return (
         <>
             {!modal.modal ?
                 (
                     <div className="Home">
+                        <h1>Ime firme:{embroideryNames.selectCompany}</h1>
+                        {/* <form onSubmit={() => handleCompanyForm()}> */}
+                        <label htmlFor="company">
+                            <select value={embroideryNames.selectCompany} id="company" onChange={(e) => (handleCompanyName(e))}>
+                                {companyForm.map((company, i) => (
+                                    <option key={i} >{company}</option>
+                                ))}
+                            </select>
+                        </label>
+                        {/* </form> */}
+                        <form onSubmit={(e) => submitCompanyForm(e)}>
+                            <input value={embroideryNames.nameCompany} id="company" onChange={(e) => (handleInputCompanyName(e))} />
+                        </form>
 
-                        <h1>Ime firme:</h1>
                         <div className="homeWrapper">
                             <div className='inputAndTable'>
                                 <div>

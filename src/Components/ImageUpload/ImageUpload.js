@@ -1,0 +1,35 @@
+import React, { useState } from "react";
+
+const ImageUpload = () => {
+    const [selectedImage, setSelectedImage] = useState([]);
+
+    return (
+        <div>
+            <h1>Upload and Display Image usign React Hook's</h1>
+            {selectedImage && (
+                <div>
+                    {
+                        selectedImage.map((image) => (
+                            <img key={image.lastModified} alt="not found" width={"200px"} src={URL.createObjectURL(image)} />
+                        ))
+                    }
+                    <br />
+                    <button onClick={() => setSelectedImage([])}>Remove</button>
+                </div>
+            )}
+            <br />
+
+            <br />
+            <input
+                type="file"
+                name="myImage"
+                onChange={(event) => {
+                    console.log(event.target.files);
+                    setSelectedImage((prevImg) => [...prevImg, event.target.files[0]]);
+                }}
+            />
+        </div>
+    );
+};
+
+export default ImageUpload;

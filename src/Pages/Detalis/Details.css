@@ -1,5 +1,5 @@
 .details {
-    height: 100vh;
+    min-height: 100vh;
     background-color: rgb(42, 118, 232);
     display: flex;
     justify-content: center;
@@ -28,5 +28,5 @@
 
 .inputDetails {
     width: 99%;
-    height: 80%;
+    height: 30%;
 }
