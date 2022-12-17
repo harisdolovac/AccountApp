@@ -2,26 +2,28 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import "./Table.css"
 
-const Table = ({ embroideryForm, handleEdit, handleDelete }) => {
+const Table = ({ embroideryForm, handleEdit, handleDelete, handleFinish, disabledButtons }) => {
 
     const [totalAmount, setTotalAmount] = useState(0)
 
+    console.log(disabledButtons);
 
     const embroideryTable = embroideryForm.map((element, i) => {
-        const { nameEmbroidery, numberOfEmbroidery, price, id } = element
-
+        const { nameEmbroidery, numberOfEmbroidery, price, id, date } = element
 
         return (
             <tr key={nameEmbroidery + i}>
                 <td>{i + 1}</td>
+                <td >{date}</td>
                 <td ><Link to={`/details/${id}`} state={{ embroideryForm }}>{nameEmbroidery}</Link></td>
                 <td >{numberOfEmbroidery}</td>
                 <td>{price}</td>
                 <td><b>{numberOfEmbroidery * price}</b></td>
-                <td><button onClick={(e) => handleEdit(e)} id={id}>Edit</button>
-                    <button onClick={(e) => handleDelete(e)} id={id}>Delete</button>
+                <td><button onClick={(e) => handleEdit(e)} id={id} className="edit-button" >Edit</button>
+                    <button onClick={(e) => handleDelete(e)} id={id} className="delete-button" >Delete</button>
+                    <button onClick={(e) => handleFinish(e)} id={id} className={`finish-button ${disabledButtons.find((item) => +item === id) ? "disabledButton" : ""}`} disabled={disabledButtons.find((item) => +item === id)} >Uradjeno</button>
                 </td>
-            </tr>
+            </tr >
         )
 
     })
@@ -39,19 +41,18 @@ const Table = ({ embroideryForm, handleEdit, handleDelete }) => {
 
     return (
         <div>
-
             <table className='table_App'>
                 <tbody>
-
-                    <tr className='tableRow__App'>
-                        <th>Br.</th>
+                    <tr>
+                        <th>Br1.</th>
+                        <th>Datum</th>
                         <th>Naziv Veza</th>
                         <th>Broj Komada</th>
                         <th>Cena</th>
                         <th>Ukupuno</th>
                         <th>Uredjivanje</th>
                     </tr>
-                    {embroideryTable.length ? (embroideryTable) : (<tr><th>Popuni polja iznad</th></tr>)}
+                    {embroideryTable.length ? (embroideryTable) : null}
 
                 </tbody>
             </table>

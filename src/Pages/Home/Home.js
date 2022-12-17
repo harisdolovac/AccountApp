@@ -4,6 +4,7 @@ import './Home.css';
 
 import Modal from '../../Components/Modal/Modal';
 import Table from '../../Components/Table/Table';
+import FinishedForm from '../FinishedForm/FinishedForm';
 
 
 function Home() {
@@ -18,11 +19,12 @@ function Home() {
     }
 
     const [embroideryNames, setEmbroideryNames] = useState(initailValues)
-    const [companyForm, setCompanyForm] = useState([])
     const [embroideryForm, setEmbroideryForm] = useState([])
+    const [companyForm, setCompanyForm] = useState([])
+    const [finishedWork, setFinishedWork] = useState([])
     const [editForm, setEditForm] = useState(null)
     const [modal, setModal] = useState({ modal: false, deletedItem: {} })
-
+    const [disabledButtons, setDisabledbuttons] = useState([])
 
 
     const handleNameChange = (e) => {
@@ -34,7 +36,7 @@ function Home() {
     const handleSubmitForm = (e) => {
         e.preventDefault()
         if (editForm === null) {
-            setEmbroideryForm((prev) => ([...prev, { ...embroideryNames, id: Math.random() * 10000 }]))
+            setEmbroideryForm((prev) => ([...prev, { ...embroideryNames, id: Math.random() * 10000, date: new Date().toLocaleDateString() }]))
         } else {
             let a = [...embroideryForm]
             a[editForm] = embroideryNames
@@ -59,6 +61,15 @@ function Home() {
         let itemToBeDeleted = embroideryForm.filter((item) => item.id === +e.target.id)
         setModal(prev => ({ ...prev, modal: true, deletedItem: itemToBeDeleted[0] }))
     }
+
+    const handleFinish = (e) => {
+        let buttonId = e.target.id
+        const newForm = embroideryForm.filter((item) => item.id === +buttonId)
+        newForm[0].date = new Date().toLocaleDateString()
+        setFinishedWork(prev => [...prev, ...newForm])
+        setDisabledbuttons(prev => [...prev, buttonId])
+    }
+
     const handleConfrmDelete = () => {
         let newForm = embroideryForm.filter((item) => item.id !== modal.deletedItem.id)
         setEmbroideryForm(newForm)
@@ -101,33 +112,34 @@ function Home() {
                             <input value={embroideryNames.nameCompany} id="company" onChange={(e) => (handleInputCompanyName(e))} />
                         </form>
 
+
                         <div className="homeWrapper">
-                            <div className='inputAndTable'>
-                                <div>
-                                    <form onSubmit={handleSubmitForm}>
-                                        <div className='formWrapper'>
-                                            <div>
-                                                <label htmlFor="nameEmbroidery">Naziv Veza</label>
-                                                <input type="text" name='nameEmbroidery' value={embroideryNames.nameEmbroidery} id="nameEmbroidery" onChange={handleNameChange} />
-                                            </div>
-                                            <div>
-                                                <label htmlFor="numberOfEmbroidery">Broj Komada</label>
-                                                <input type="number" name='numberOfEmbroidery' value={embroideryNames.numberOfEmbroidery} id="numberOfEmbroidery" onChange={handleNameChange} />
-                                            </div>
-                                            <div>
-                                                <label htmlFor="price">Cena</label>
-                                                <input type="number" name='price' id="price" step="any" value={embroideryNames.price} onChange={handleNameChange} />
-                                            </div>
-                                            <button type='submit'>Submit</button>
-                                        </div>
-                                    </form>
-                                </div >
-                                <Table embroideryForm={embroideryForm} handleEdit={handleEdit} handleDelete={handleDelete} />
-                            </div >
+
+                            <form onSubmit={handleSubmitForm}>
+                                <div className='formWrapper'>
+
+                                    <label htmlFor="nameEmbroidery">Naziv Veza</label>
+                                    <input type="text" name='nameEmbroidery' value={embroideryNames.nameEmbroidery} id="nameEmbroidery" onChange={handleNameChange} />
+
+
+                                    <label htmlFor="numberOfEmbroidery">Broj Komada</label>
+                                    <input type="number" name='numberOfEmbroidery' value={embroideryNames.numberOfEmbroidery} id="numberOfEmbroidery" onChange={handleNameChange} />
+
+
+                                    <label htmlFor="price">Cena</label>
+                                    <input type="number" name='price' id="price" step="any" value={embroideryNames.price} onChange={handleNameChange} />
+
+                                    <button type='submit'>Submit</button>
+                                </div>
+                            </form>
                         </div >
+                        <Table embroideryForm={embroideryForm} handleEdit={handleEdit} handleDelete={handleDelete} handleFinish={handleFinish} disabledButtons={disabledButtons} />
+
+
                     </div >
                 ) : <Modal modal={modal} handleConfrmDelete={handleConfrmDelete} handleCancleDelete={handleCancleDelete} />
             }
+            <FinishedForm finishedWork={finishedWork} />
         </>
     );
 }

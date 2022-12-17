@@ -1,18 +1,11 @@
-.Home {
-    background-color: grey;
+/* .Home {
+    background-color: whitesmoke;
     margin: 0;
-}
+} */
 
 .homeWrapper {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-
+    margin: 35px;
 }
-
-
 
 .formWrapper {
     display: flex;
@@ -23,4 +16,77 @@ label,
 input {
     display: flex;
     flex-direction: column;
+}
+
+
+form {
+    /* Add some general styling to the form */
+    width: 90%;
+    margin: 0 auto;
+    background-color: #fafafa;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+/* Style the form labels */
+form label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #444;
+}
+
+/* Style the form input fields */
+form input[type="text"],
+form input[type="number"] {
+    width: 100%;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    padding: 8px;
+    font-size: 16px;
+    color: rgb(202, 56, 56);
+
+}
+
+/* Style the submit button */
+form button[type="submit"] {
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    padding: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #0073e6;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+/* Add a hover effect to the submit button */
+form button[type="submit"]:hover {
+    background-color: #0059b3;
+}
+
+/* Add media queries for smaller screen sizes */
+@media (max-width: 768px) {
+
+
+    form label {
+        /* Reduce the font size of the labels on small screens */
+        font-size: 16px;
+    }
+
+    form input[type="text"],
+    form input[type="number"],
+    form input[type="password"] {
+        /* Reduce the font size of the input fields on small screens */
+        font-size: 14px;
+    }
+
+    form input[type="submit"] {
+        /* Reduce the font size of the submit button on small screens */
+        font-size: 16px;
+    }
 }
