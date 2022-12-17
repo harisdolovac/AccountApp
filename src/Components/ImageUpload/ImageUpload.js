@@ -5,7 +5,7 @@ const ImageUpload = () => {
 
     return (
         <div>
-            <h1>Upload and Display Image usign React Hook's</h1>
+            <h1>Upload and Display Image</h1>
             {selectedImage && (
                 <div>
                     {
@@ -20,15 +20,17 @@ const ImageUpload = () => {
             <br />
 
             <br />
+
             <input
+
                 type="file"
                 name="myImage"
                 onChange={(event) => {
-                    console.log(event.target.files);
                     setSelectedImage((prevImg) => [...prevImg, event.target.files[0]]);
                 }}
             />
-        </div>
+
+        </div >
     );
 };
 

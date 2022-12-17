@@ -7,14 +7,16 @@
 }
 
 .detailsWrapper {
-    width: 90%;
-    height: 90%;
+    width: 100%;
+    height: 100%;
     border: 5px solid black;
     display: flex;
+    min-height: 100vh;
 
 }
 
 .leftDetails {
+    min-height: 100vh;
     width: 50%;
     height: 100%;
     background-color: #fff;

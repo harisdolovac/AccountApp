@@ -120,12 +120,8 @@ function Home() {
 
                                     <label htmlFor="nameEmbroidery">Naziv Veza</label>
                                     <input type="text" name='nameEmbroidery' value={embroideryNames.nameEmbroidery} id="nameEmbroidery" onChange={handleNameChange} />
-
-
                                     <label htmlFor="numberOfEmbroidery">Broj Komada</label>
                                     <input type="number" name='numberOfEmbroidery' value={embroideryNames.numberOfEmbroidery} id="numberOfEmbroidery" onChange={handleNameChange} />
-
-
                                     <label htmlFor="price">Cena</label>
                                     <input type="number" name='price' id="price" step="any" value={embroideryNames.price} onChange={handleNameChange} />
 
