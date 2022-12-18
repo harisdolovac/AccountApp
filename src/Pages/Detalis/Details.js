@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { useParams, useLocation, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import ImageUpload from '../../Components/ImageUpload/ImageUpload';
 import ModalDetails from '../../Components/ModalDetails/ModalDetails';
 import "./Details.css"
 
-const Detalis = ({ embroideryForm }) => {
+const Detalis = ({ embroideryForm, setEmbroideryForm }) => {
 
 
 
@@ -22,23 +22,22 @@ const Detalis = ({ embroideryForm }) => {
         setTextDetails("")
     }
 
-    const location = useLocation();
-    const fileFromTable = location.state.embroideryForm
 
     const { id } = useParams();
-    const detailsMap = fileFromTable.filter((item) => item.id === +id)
+    let detailsMap = embroideryForm.filter((item) => item.id === +id)
 
-    console.log(fileFromTable);
 
     const handleModalDetails = () => {
         setModalDetails(true)
     }
+    const navigate = useNavigate();
+
 
     return (
         <>
             {!modalDetails ? (
                 <>
-                    <button><Link to="/" >Home</Link ></button>
+                    <button onClick={() => navigate("/")} >Home</button>
                     <div className='details'>
                         <div className="detailsWrapper">
                             <div className="leftDetails">
@@ -58,14 +57,13 @@ const Detalis = ({ embroideryForm }) => {
                             </div>
 
                             <div className="rightDetails">
-
                                 <div className="rightSide">slikA</div>
                                 <ImageUpload />
                             </div>
                         </div>
 
                     </div>
-                </>) : (<ModalDetails setModalDetails={setModalDetails} fileFromTable={fileFromTable} />)
+                </>) : (<ModalDetails setModalDetails={setModalDetails} setEmbroideryForm={setEmbroideryForm} embroideryForm={embroideryForm} />)
             }
         </>
 

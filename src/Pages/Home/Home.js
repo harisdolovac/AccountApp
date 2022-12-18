@@ -5,9 +5,10 @@ import './Home.css';
 import Modal from '../../Components/Modal/Modal';
 import Table from '../../Components/Table/Table';
 import FinishedForm from '../FinishedForm/FinishedForm';
+import Company from '../Company/Company';
 
 
-function Home() {
+function Home({ embroideryForm, setEmbroideryForm }) {
 
     const initailValues = {
         nameEmbroidery: "",
@@ -19,8 +20,8 @@ function Home() {
     }
 
     const [embroideryNames, setEmbroideryNames] = useState(initailValues)
-    const [embroideryForm, setEmbroideryForm] = useState([])
-    const [companyForm, setCompanyForm] = useState([])
+
+
     const [finishedWork, setFinishedWork] = useState([])
     const [editForm, setEditForm] = useState(null)
     const [modal, setModal] = useState({ modal: false, deletedItem: {} })
@@ -32,6 +33,7 @@ function Home() {
         setEmbroideryNames({ ...embroideryNames, [name]: value })
     }
 
+    console.log(embroideryForm);
 
     const handleSubmitForm = (e) => {
         e.preventDefault()
@@ -79,38 +81,14 @@ function Home() {
         setModal(prev => ({ ...prev, modal: false }))
     }
 
-    const submitCompanyForm = (e) => {
-        e.preventDefault()
-        setCompanyForm((prev) => [...prev, embroideryNames.nameCompany])
-        setEmbroideryNames((prev) => ({ ...prev, nameCompany: "" }))
 
-    }
-    const handleCompanyName = (e) => {
-        setEmbroideryNames((prev) => ({ ...prev, selectCompany: e.target.value }))
-    }
-
-    const handleInputCompanyName = (e) => {
-        setEmbroideryNames((prev) => ({ ...prev, nameCompany: e.target.value }))
-    }
 
     return (
         <>
             {!modal.modal ?
                 (
                     <div className="Home">
-                        <h1>Ime firme:{embroideryNames.selectCompany}</h1>
-                        {/* <form onSubmit={() => handleCompanyForm()}> */}
-                        <label htmlFor="company">
-                            <select value={embroideryNames.selectCompany} id="company" onChange={(e) => (handleCompanyName(e))}>
-                                {companyForm.map((company, i) => (
-                                    <option key={i} >{company}</option>
-                                ))}
-                            </select>
-                        </label>
-                        {/* </form> */}
-                        <form onSubmit={(e) => submitCompanyForm(e)}>
-                            <input value={embroideryNames.nameCompany} id="company" onChange={(e) => (handleInputCompanyName(e))} />
-                        </form>
+                        <Company embroideryNames={embroideryNames} setEmbroideryNames={setEmbroideryNames} />
 
 
                         <div className="homeWrapper">
@@ -129,7 +107,7 @@ function Home() {
                                 </div>
                             </form>
                         </div >
-                        <Table embroideryForm={embroideryForm} handleEdit={handleEdit} handleDelete={handleDelete} handleFinish={handleFinish} disabledButtons={disabledButtons} />
+                        <Table embroideryForm={embroideryForm} setEmbroideryForm={setEmbroideryForm} handleEdit={handleEdit} handleDelete={handleDelete} handleFinish={handleFinish} disabledButtons={disabledButtons} />
 
 
                     </div >

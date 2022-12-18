@@ -6,16 +6,13 @@ const Table = ({ embroideryForm, handleEdit, handleDelete, handleFinish, disable
 
     const [totalAmount, setTotalAmount] = useState(0)
 
-    console.log(disabledButtons);
-
     const embroideryTable = embroideryForm.map((element, i) => {
         const { nameEmbroidery, numberOfEmbroidery, price, id, date } = element
-
         return (
             <tr key={nameEmbroidery + i}>
                 <td>{i + 1}</td>
                 <td >{date}</td>
-                <td ><Link to={`/details/${id}`} state={{ embroideryForm }}>{nameEmbroidery}</Link></td>
+                <td ><Link to={`/details/${id}`}  >{nameEmbroidery}</Link></td>
                 <td >{numberOfEmbroidery}</td>
                 <td>{price}</td>
                 <td><b>{numberOfEmbroidery * price}</b></td>
