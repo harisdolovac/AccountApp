@@ -1,15 +1,25 @@
 import React, { useState } from 'react'
 
-const Company = ({ embroideryNames, setEmbroideryNames }) => {
+
+const { v4: uuidv4 } = require('uuid');
+
+const Company = ({ embroideryNames, setEmbroideryNames, setEmbroideryForm }) => {
 
     const [companyForm, setCompanyForm] = useState([])
 
 
+
     const submitCompanyForm = (e) => {
         e.preventDefault()
+        console.log(embroideryNames);
+        let nameComp = embroideryNames.nameCompany
         setCompanyForm((prev) => [...prev, embroideryNames.nameCompany])
-        setEmbroideryNames((prev) => ({ ...prev, nameCompany: "" }))
+        setEmbroideryNames((prev) => ({ ...prev, selectCompany: embroideryNames.nameCompany, nameCompany: "" }))
+        setEmbroideryForm(prev => [...prev, { [nameComp]: [] }])
+
     }
+
+
     const handleCompanyName = (e) => {
         setEmbroideryNames((prev) => ({ ...prev, selectCompany: e.target.value }))
     }
@@ -18,10 +28,6 @@ const Company = ({ embroideryNames, setEmbroideryNames }) => {
         setEmbroideryNames((prev) => ({ ...prev, nameCompany: e.target.value }))
     }
 
-    const handleCompanyForm = (e) => {
-        e.preventDefault()
-        console.log("Aaa");
-    }
 
 
 
@@ -30,16 +36,16 @@ const Company = ({ embroideryNames, setEmbroideryNames }) => {
     return (
         <div>
             <h1>Ime firme:{embroideryNames.selectCompany}</h1>
-            <form onSubmit={() => handleCompanyForm()}>
+
+
+            <form onSubmit={(e) => submitCompanyForm(e)}>
                 <label htmlFor="company">
                     <select value={embroideryNames.selectCompany} id="company" onChange={(e) => (handleCompanyName(e))}>
                         {companyForm.map((company, i) => (
-                            <option key={i} value={company} >{company}</option>
+                            <option key={uuidv4()} value={company} >{company}</option>
                         ))}
                     </select>
                 </label>
-            </form>
-            <form onSubmit={(e) => submitCompanyForm(e)}>
                 <input value={embroideryNames.nameCompany} id="company" onChange={(e) => (handleInputCompanyName(e))} />
             </form>
         </div >

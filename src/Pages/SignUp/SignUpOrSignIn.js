@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import "./SignUpOrSignIn.css"
 import app from "../../Components/Firebase/firebaseConfig"
@@ -11,7 +11,6 @@ const SignUp = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [userRegistered, setUserRegistered] = useState(false)
-    const [authenticated, setAuthenticated] = useState(false)
 
 
     let navigate = useNavigate();
@@ -26,7 +25,7 @@ const SignUp = () => {
                 // ...
                 alert("You created an account")
                 console.log(user);
-                setAuthenticated(true)
+                return navigate("/");
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -45,7 +44,7 @@ const SignUp = () => {
                 // ...
                 alert("You are logged in")
                 console.log(user);
-                setAuthenticated(true)
+                return navigate("/");
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -57,11 +56,6 @@ const SignUp = () => {
     }
 
 
-    useEffect(() => {
-        if (authenticated) {
-            return navigate("/");
-        }
-    }, [authenticated])
 
     return (
         <>

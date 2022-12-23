@@ -1,4 +1,5 @@
 import React from 'react'
+import { v4 as uuidv4 } from 'uuid'
 
 const FinishedForm = ({ finishedWork }) => {
     return (
@@ -16,7 +17,7 @@ const FinishedForm = ({ finishedWork }) => {
                     {
                         finishedWork.map((item, i) => {
                             return (
-                                <tr key={i}>
+                                <tr key={uuidv4()}>
                                     <td>{i + 1}</td>
                                     <td>{item.date}</td>
                                     <td>{item.nameEmbroidery}</td>

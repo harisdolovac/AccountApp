@@ -4,6 +4,8 @@ import ImageUpload from '../../Components/ImageUpload/ImageUpload';
 import ModalDetails from '../../Components/ModalDetails/ModalDetails';
 import "./Details.css"
 
+const { v4: uuidv4 } = require('uuid');
+
 const Detalis = ({ embroideryForm, setEmbroideryForm }) => {
 
 
@@ -46,7 +48,7 @@ const Detalis = ({ embroideryForm, setEmbroideryForm }) => {
                                 <div className="leftSide">Cena: {detailsMap[0].price}</div>
                                 <p>Napomena:</p>
                                 {
-                                    FormDetails.map((text, i) => <p key={i} >{text}</p>)
+                                    FormDetails.map((text, i) => <p key={uuidv4()} >{text}</p>)
                                 }
 
                                 <form onSubmit={handleDetailsForm}>

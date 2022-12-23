@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
 
 const ImageUpload = () => {
     const [selectedImage, setSelectedImage] = useState([]);
@@ -10,7 +11,7 @@ const ImageUpload = () => {
                 <div>
                     {
                         selectedImage.map((image) => (
-                            <img key={image.lastModified} alt="not found" width={"200px"} src={URL.createObjectURL(image)} />
+                            <img key={uuidv4()} alt="not found" width={"200px"} src={URL.createObjectURL(image)} />
                         ))
                     }
                     <br />
