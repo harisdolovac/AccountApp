@@ -10,18 +10,9 @@ import './Home.css';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 
-function Home({ embroideryForm, setEmbroideryForm }) {
+function Home({ embroideryForm, setEmbroideryForm, embroideryNames, setEmbroideryNames, initialValues }) {
 
-    const initialValues = {
-        nameEmbroidery: "",
-        nameCompany: "",
-        selectCompany: "",
-        numberOfEmbroidery: 0,
-        price: 0,
-        id: null,
-    }
 
-    const [embroideryNames, setEmbroideryNames] = useState(initialValues)
     const [finishedWork, setFinishedWork] = useState([])
     const [editForm, setEditForm] = useState(null)
     const [modal, setModal] = useState({ modal: false, deletedItem: {} })
@@ -50,39 +41,12 @@ function Home({ embroideryForm, setEmbroideryForm }) {
 
 
 
-
     const handleNameChange = (e) => {
         const { name, value } = e.target
         setEmbroideryNames({ ...embroideryNames, [name]: value })
     }
 
 
-
-
-    console.log("embroideryForm", embroideryForm);
-
-    // const handleSubmitForm = (e) => {
-    //     e.preventDefault();
-
-    //     let updatedForm;
-    //     if (editForm === null && embroideryForm.length) {
-    //         updatedForm = embroideryForm.map((item) => {
-    //             if (Object.keys(item).join("") === embroideryNames.selectCompany) {
-    //                 return { ...item, [embroideryNames.selectCompany]: [...item[embroideryNames.selectCompany], embroideryNames] };
-    //             } else {
-    //                 return item;
-    //             }
-    //         });
-    //     } else {
-    //         const updatedItem = { ...embroideryForm[editForm], ...embroideryNames };
-    //         updatedForm = [...embroideryForm.slice(0, editForm), updatedItem, ...embroideryForm.slice(editForm + 1)];
-    //         setEditForm(null);
-    //     }
-    //     setEmbroideryForm(updatedForm);
-
-    //     const selectCompany = { ...initialValues, selectCompany: embroideryNames.selectCompany };
-    //     setEmbroideryNames(selectCompany);
-    // };
 
     const handleSubmitForm = (e) => {
         e.preventDefault();
@@ -103,8 +67,10 @@ function Home({ embroideryForm, setEmbroideryForm }) {
                 }
             });
         } else {
-            const updatedItem = { ...embroideryForm[editForm], ...embroideryNames, id: uuidv4(), date: new Date().toLocaleDateString() };
-            updatedForm = [...embroideryForm.slice(0, editForm), updatedItem, ...embroideryForm.slice(editForm + 1)];
+            updatedForm = [...embroideryForm]
+            const indexOfUser = embroideryForm.findIndex((item) => Object.keys(item).join("") === embroideryNames.selectCompany)
+            const updatedItem = { ...embroideryForm[indexOfUser][editForm], ...embroideryNames, id: uuidv4(), date: new Date().toLocaleDateString() };
+            updatedForm[indexOfUser][embroideryNames.selectCompany][editForm] = updatedItem
             setEditForm(null);
         }
         setEmbroideryForm(updatedForm);
@@ -113,60 +79,85 @@ function Home({ embroideryForm, setEmbroideryForm }) {
         setEmbroideryNames(selectCompany);
     };
 
+    console.log(embroideryForm);
 
-    const funcSimply = (eF, eN) => {
-
-        return eF.find(item => item[eN.selectCompany])[eN.selectCompany]
-    }
 
 
     const handleEdit = (e) => {
         let id = e.target.id
 
-        console.log(
-            embroideryForm.find(item => item[embroideryNames.selectCompany])[embroideryNames.selectCompany])
-        console.log(funcSimply(embroideryForm, embroideryNames))
 
-        // embroideryForm.find((item) => {
+        let tempObj = embroideryForm.find(item => item[embroideryNames.selectCompany])[embroideryNames.selectCompany]
+
+        console.log(tempObj);
+        // tempObj.find((item) => {
         //     if (item.id === id) {
         //         setEmbroideryNames(item)
-        //         setEditForm(embroideryForm.indexOf(item))
+        //         setEditForm(tempObj.indexOf(item))
         //     }
         // })
+        const updatedItem = tempObj.find((item) => {
+            if (item.id === id) {
+                setEmbroideryNames(item);
+                setEditForm(tempObj.indexOf(item));
+                return true;
+            }
+            return false;
+        });
     }
 
     const handleDelete = (e) => {
         console.log(e.target.id);
-        // let itemToBeDeleted = embroideryForm.filter((item) => item.id === +e.target.id)
-        // setModal(prev => ({ ...prev, modal: true, deletedItem: itemToBeDeleted[0] }))
+        console.log(embroideryForm);
+        const updatedForm = [...embroideryForm]
+        const indexOfUser = embroideryForm.findIndex((item) => Object.keys(item).join("") === embroideryNames.selectCompany)
+        const arrayWithObjects = updatedForm[indexOfUser][embroideryNames.selectCompany]
+        let itemToBeDeleted = arrayWithObjects.filter((item) => item.id === e.target.id)
+        console.log(itemToBeDeleted);
+        console.log(embroideryForm[indexOfUser][embroideryNames.selectCompany]);
+
+        setModal(prev => ({ ...prev, modal: true, deletedItem: itemToBeDeleted[0] }))
     }
 
-    const handleFinish = (e) => {
-        let buttonId = e.target.id
-        const newForm = embroideryForm.filter((item) => item.id === +buttonId)
-        newForm[0].date = new Date().toLocaleDateString()
-        setFinishedWork(prev => [...prev, ...newForm])
-        setDisabledbuttons(prev => [...prev, buttonId])
-    }
+
 
     const handleConfrmDelete = () => {
-        let newForm = embroideryForm.filter((item) => item.id !== modal.deletedItem.id)
-        setEmbroideryForm(newForm)
+        console.log(modal);
+
+        const indexOfUser = embroideryForm.findIndex((item) => Object.keys(item).join("") === embroideryNames.selectCompany)
+        let newForm = embroideryForm[indexOfUser][embroideryNames.selectCompany].filter((item) => item.id !== modal.deletedItem.id)
+        console.log(newForm, "newForm");
+        console.log(modal);
+        const updatedForm = [...embroideryForm];
+        updatedForm[indexOfUser][embroideryNames.selectCompany] = newForm;
         setModal(prev => ({ ...prev, modal: false }))
+        return updatedForm;
     }
     const handleCancleDelete = () => {
         setModal(prev => ({ ...prev, modal: false }))
     }
 
+    const handleFinish = (e) => {
+        const indexOfUser = embroideryForm.findIndex((item) => Object.keys(item).join("") === embroideryNames.selectCompany)
+        console.log(indexOfUser);
+        let buttonId = e.target.id
+        const newForm = embroideryForm[indexOfUser][embroideryNames.selectCompany].filter((item) => item.id === buttonId)
+        console.log(newForm);
+        newForm[0].date = new Date().toLocaleDateString()
+        setFinishedWork(prev => [...prev, ...newForm])
+        setDisabledbuttons(prev => [...prev, buttonId])
+        console.log(buttonId);
+    }
 
+    console.log(finishedWork);
 
     return (
         <>
+            <Company embroideryNames={embroideryNames} setEmbroideryNames={setEmbroideryNames} setEmbroideryForm={setEmbroideryForm} embroideryForm={embroideryForm} />
             {!modal.modal ?
                 (
                     <div className="Home">
                         <h1>korisnik je:  {currentUser}</h1>
-                        <Company embroideryNames={embroideryNames} setEmbroideryNames={setEmbroideryNames} setEmbroideryForm={setEmbroideryForm} />
 
 
                         <div className="homeWrapper">
@@ -188,10 +179,10 @@ function Home({ embroideryForm, setEmbroideryForm }) {
                         <Table embroideryForm={embroideryForm} setEmbroideryForm={setEmbroideryForm} handleEdit={handleEdit} handleDelete={handleDelete} handleFinish={handleFinish} embroideryNames={embroideryNames} disabledButtons={disabledButtons} />
 
 
+                        <FinishedForm finishedWork={finishedWork} />
                     </div >
                 ) : <Modal modal={modal} handleConfrmDelete={handleConfrmDelete} handleCancleDelete={handleCancleDelete} />
             }
-            <FinishedForm finishedWork={finishedWork} />
         </>
     );
 }

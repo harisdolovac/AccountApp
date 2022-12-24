@@ -1,23 +1,27 @@
 import React, { useState } from 'react'
-
-
 const { v4: uuidv4 } = require('uuid');
 
-const Company = ({ embroideryNames, setEmbroideryNames, setEmbroideryForm }) => {
+
+const Company = ({ embroideryNames, setEmbroideryNames, embroideryForm, setEmbroideryForm }) => {
 
     const [companyForm, setCompanyForm] = useState([])
 
 
-
     const submitCompanyForm = (e) => {
-        e.preventDefault()
-        console.log(embroideryNames);
-        let nameComp = embroideryNames.nameCompany
-        setCompanyForm((prev) => [...prev, embroideryNames.nameCompany])
-        setEmbroideryNames((prev) => ({ ...prev, selectCompany: embroideryNames.nameCompany, nameCompany: "" }))
-        setEmbroideryForm(prev => [...prev, { [nameComp]: [] }])
+        e.preventDefault();
+        const { nameCompany } = embroideryNames;
 
-    }
+        if (companyForm.includes(nameCompany)) {
+            alert("isti naziv firme");
+            return;
+        }
+
+        setCompanyForm(prev => [...prev, nameCompany]);
+        setEmbroideryNames(prev => ({ ...prev, selectCompany: nameCompany, nameCompany: "" }));
+        setEmbroideryForm(prev => [...prev, { [nameCompany]: [] }]);
+    };
+
+
 
 
     const handleCompanyName = (e) => {
@@ -25,7 +29,9 @@ const Company = ({ embroideryNames, setEmbroideryNames, setEmbroideryForm }) => 
     }
 
     const handleInputCompanyName = (e) => {
+        console.log(companyForm);
         setEmbroideryNames((prev) => ({ ...prev, nameCompany: e.target.value }))
+
     }
 
 
@@ -41,7 +47,7 @@ const Company = ({ embroideryNames, setEmbroideryNames, setEmbroideryForm }) => 
             <form onSubmit={(e) => submitCompanyForm(e)}>
                 <label htmlFor="company">
                     <select value={embroideryNames.selectCompany} id="company" onChange={(e) => (handleCompanyName(e))}>
-                        {companyForm.map((company, i) => (
+                        {companyForm.map((company) => (
                             <option key={uuidv4()} value={company} >{company}</option>
                         ))}
                     </select>

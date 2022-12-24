@@ -68,7 +68,7 @@ const Table = ({ embroideryForm, handleEdit, handleDelete, handleFinish, embroid
                             <button
                                 onClick={(e) => handleFinish(e)}
                                 id={id}
-                                className={`finish-button ${disabledButtons.find((item) => +item === id)
+                                className={`finish-button ${disabledButtons.find((item) => item === id)
                                     ? "disabledButton"
                                     : ""
                                     }`}

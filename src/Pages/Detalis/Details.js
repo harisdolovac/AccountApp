@@ -6,7 +6,7 @@ import "./Details.css"
 
 const { v4: uuidv4 } = require('uuid');
 
-const Detalis = ({ embroideryForm, setEmbroideryForm }) => {
+const Detalis = ({ embroideryForm, setEmbroideryForm, embroideryNames }) => {
 
 
 
@@ -18,16 +18,33 @@ const Detalis = ({ embroideryForm, setEmbroideryForm }) => {
         setTextDetails(e.target.value)
     }
 
-    const handleDetailsForm = (e) => {
-        e.preventDefault()
-        setFormDetails((prev) => [...prev, textDetails])
-        setTextDetails("")
+
+
+    console.log("Adsa", embroideryForm);
+    const { id } = useParams();
+
+
+
+
+
+    let indexOfUser = embroideryForm.findIndex((item) => Object.keys(item).join("") === embroideryNames.selectCompany)
+    const funcToFindMessage = (form) => {
+        return form[indexOfUser][embroideryNames.selectCompany].find((item) => item.id === id)
     }
 
 
-    const { id } = useParams();
-    let detailsMap = embroideryForm.filter((item) => item.id === +id)
+    console.log(funcToFindMessage(embroideryForm));
 
+    const handleDetailsForm = (e) => {
+        e.preventDefault()
+        const newState = [...embroideryForm]
+        funcToFindMessage(newState)["message"].push(textDetails)
+        setEmbroideryForm(newState)
+        setTextDetails("")
+        return newState
+    }
+
+    console.log(embroideryForm);
 
     const handleModalDetails = () => {
         setModalDetails(true)
@@ -43,15 +60,15 @@ const Detalis = ({ embroideryForm, setEmbroideryForm }) => {
                     <div className='details'>
                         <div className="detailsWrapper">
                             <div className="leftDetails">
-                                <div className="leftSide">Ime Veza: {detailsMap[0].nameEmbroidery}</div>
-                                <div className="leftSide">Broj komada: {detailsMap[0].numberOfEmbroidery}</div>
-                                <div className="leftSide">Cena: {detailsMap[0].price}</div>
+                                <div className="leftSide">Ime Veza: {funcToFindMessage(embroideryForm).nameEmbroidery}</div>
+                                <div className="leftSide">Broj komada: {funcToFindMessage(embroideryForm).numberOfEmbroidery}</div>
+                                <div className="leftSide">Cena: {funcToFindMessage(embroideryForm).price}</div>
                                 <p>Napomena:</p>
                                 {
-                                    FormDetails.map((text, i) => <p key={uuidv4()} >{text}</p>)
+                                    funcToFindMessage(embroideryForm)["message"].map((text, i) => <p key={uuidv4()} >{text}</p>)
                                 }
 
-                                <form onSubmit={handleDetailsForm}>
+                                <form onSubmit={(e) => handleDetailsForm(e)}>
                                     <textarea type="text" value={textDetails} className='inputDetails' onChange={(e) => handleDetails(e)} />
                                     <button type='submit'>Submit</button>
                                 </form>
@@ -65,7 +82,7 @@ const Detalis = ({ embroideryForm, setEmbroideryForm }) => {
                         </div>
 
                     </div>
-                </>) : (<ModalDetails setModalDetails={setModalDetails} setEmbroideryForm={setEmbroideryForm} embroideryForm={embroideryForm} />)
+                </>) : (<ModalDetails setModalDetails={setModalDetails} setEmbroideryForm={setEmbroideryForm} embroideryForm={embroideryForm} indexOfUser={indexOfUser} embroideryNames={embroideryNames} funcToFindMessage={funcToFindMessage} />)
             }
         </>
 

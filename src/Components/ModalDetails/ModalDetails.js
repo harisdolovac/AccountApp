@@ -1,20 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom';
 import "./ModalDetails.css"
 
-const ModalDetails = ({ setModalDetails, embroideryForm, setEmbroideryForm }) => {
+const ModalDetails = ({ setModalDetails, embroideryForm, setEmbroideryForm, funcToFindMessage }) => {
     const [numberDecrement, setNumberDecrement] = useState(0)
     const [numberDecrementInput, setNumberDecrementInput] = useState("")
 
     const handleModalDetailsClose = () => {
         setModalDetails(false)
     }
-
-
-
-    const { id } = useParams();
-    console.log(id);
-
 
 
 
@@ -27,26 +20,19 @@ const ModalDetails = ({ setModalDetails, embroideryForm, setEmbroideryForm }) =>
 
     }
 
+
     useEffect(() => {
 
-        setEmbroideryForm((prevForm) =>
-            prevForm.map((item) => {
-                if (item.id === +id) {
-                    return {
-                        ...item,
-                        numberOfEmbroidery: item.numberOfEmbroidery - numberDecrement,
-                    };
-                }
-                return item;
-            })
-        );
+        const newState = [...embroideryForm]
+        funcToFindMessage(newState).numberOfEmbroidery -= 5
+        setEmbroideryForm(newState)
+
         if (numberDecrement !== 0) {
             handleModalDetailsClose()
         }
 
 
     }, [numberDecrement]);
-
 
 
 
