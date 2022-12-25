@@ -43,13 +43,18 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryNames, setEmbroider
 
     const handleNameChange = (e) => {
         const { name, value } = e.target
+        console.log(embroideryForm, initialValues, embroideryNames);
         setEmbroideryNames({ ...embroideryNames, [name]: value })
     }
 
-
+    console.log(embroideryForm);
 
     const handleSubmitForm = (e) => {
         e.preventDefault();
+        if (!embroideryForm.length) {
+            alert("Unesi prvo ime kompanije")
+            return
+        }
 
         let updatedForm;
         if (editForm === null && embroideryForm.length) {
@@ -68,9 +73,8 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryNames, setEmbroider
             });
         } else {
             updatedForm = [...embroideryForm]
-            const indexOfUser = embroideryForm.findIndex((item) => Object.keys(item).join("") === embroideryNames.selectCompany)
-            const updatedItem = { ...embroideryForm[indexOfUser][editForm], ...embroideryNames, id: uuidv4(), date: new Date().toLocaleDateString() };
-            updatedForm[indexOfUser][embroideryNames.selectCompany][editForm] = updatedItem
+            const updatedItem = { ...embroideryForm[indexOfUser()][editForm], ...embroideryNames, id: uuidv4(), date: new Date().toLocaleDateString() };
+            updatedForm[indexOfUser()][embroideryNames.selectCompany][editForm] = updatedItem
             setEditForm(null);
         }
         setEmbroideryForm(updatedForm);
@@ -79,8 +83,6 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryNames, setEmbroider
         setEmbroideryNames(selectCompany);
     };
 
-    console.log(embroideryForm);
-
 
 
     const handleEdit = (e) => {
@@ -88,14 +90,6 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryNames, setEmbroider
 
 
         let tempObj = embroideryForm.find(item => item[embroideryNames.selectCompany])[embroideryNames.selectCompany]
-
-        console.log(tempObj);
-        // tempObj.find((item) => {
-        //     if (item.id === id) {
-        //         setEmbroideryNames(item)
-        //         setEditForm(tempObj.indexOf(item))
-        //     }
-        // })
         const updatedItem = tempObj.find((item) => {
             if (item.id === id) {
                 setEmbroideryNames(item);
@@ -106,15 +100,14 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryNames, setEmbroider
         });
     }
 
+    const indexOfUser = () => {
+        return embroideryForm.findIndex((item) => Object.keys(item).join("") === embroideryNames.selectCompany)
+    }
+
     const handleDelete = (e) => {
-        console.log(e.target.id);
-        console.log(embroideryForm);
         const updatedForm = [...embroideryForm]
-        const indexOfUser = embroideryForm.findIndex((item) => Object.keys(item).join("") === embroideryNames.selectCompany)
-        const arrayWithObjects = updatedForm[indexOfUser][embroideryNames.selectCompany]
+        const arrayWithObjects = updatedForm[indexOfUser()][embroideryNames.selectCompany]
         let itemToBeDeleted = arrayWithObjects.filter((item) => item.id === e.target.id)
-        console.log(itemToBeDeleted);
-        console.log(embroideryForm[indexOfUser][embroideryNames.selectCompany]);
 
         setModal(prev => ({ ...prev, modal: true, deletedItem: itemToBeDeleted[0] }))
     }
@@ -122,14 +115,10 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryNames, setEmbroider
 
 
     const handleConfrmDelete = () => {
-        console.log(modal);
+        let newForm = embroideryForm[indexOfUser()][embroideryNames.selectCompany].filter((item) => item.id !== modal.deletedItem.id)
 
-        const indexOfUser = embroideryForm.findIndex((item) => Object.keys(item).join("") === embroideryNames.selectCompany)
-        let newForm = embroideryForm[indexOfUser][embroideryNames.selectCompany].filter((item) => item.id !== modal.deletedItem.id)
-        console.log(newForm, "newForm");
-        console.log(modal);
         const updatedForm = [...embroideryForm];
-        updatedForm[indexOfUser][embroideryNames.selectCompany] = newForm;
+        updatedForm[indexOfUser()][embroideryNames.selectCompany] = newForm;
         setModal(prev => ({ ...prev, modal: false }))
         return updatedForm;
     }
@@ -138,18 +127,12 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryNames, setEmbroider
     }
 
     const handleFinish = (e) => {
-        const indexOfUser = embroideryForm.findIndex((item) => Object.keys(item).join("") === embroideryNames.selectCompany)
-        console.log(indexOfUser);
         let buttonId = e.target.id
-        const newForm = embroideryForm[indexOfUser][embroideryNames.selectCompany].filter((item) => item.id === buttonId)
-        console.log(newForm);
+        const newForm = embroideryForm[indexOfUser()][embroideryNames.selectCompany].filter((item) => item.id === buttonId)
         newForm[0].date = new Date().toLocaleDateString()
         setFinishedWork(prev => [...prev, ...newForm])
         setDisabledbuttons(prev => [...prev, buttonId])
-        console.log(buttonId);
     }
-
-    console.log(finishedWork);
 
     return (
         <>

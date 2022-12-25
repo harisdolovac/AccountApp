@@ -10,7 +10,7 @@ const Company = ({ embroideryNames, setEmbroideryNames, embroideryForm, setEmbro
     const submitCompanyForm = (e) => {
         e.preventDefault();
         const { nameCompany } = embroideryNames;
-
+        console.log(embroideryNames);
         if (companyForm.includes(nameCompany)) {
             alert("isti naziv firme");
             return;
