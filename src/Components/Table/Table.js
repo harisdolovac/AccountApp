@@ -3,101 +3,78 @@ import { Link } from 'react-router-dom'
 import "./Table.css"
 const { v4: uuidv4 } = require('uuid');
 
-const Table = ({ embroideryForm, handleEdit, handleDelete, handleFinish, embroideryNames, disabledButtons }) => {
+const Table = ({ finishedWork, handleEdit, handleDelete, handleFinish, embroideryFormInput, companiesData }) => {
 
     const [totalAmount, setTotalAmount] = useState(0)
 
-    let a = [embroideryNames.selectCompany]
+    let nameCompany = [embroideryFormInput.selectCompany]
 
 
 
-    // const embroideryTable = embroideryForm.map((element) => {
-    //     if (element[embroideryNames.selectCompany] && element[embroideryNames.selectCompany].length > 0) {
-    //         return element[embroideryNames.selectCompany].map((item, i) => {
-    //             const { nameEmbroidery, numberOfEmbroidery, price, id, date } = item
-    //             return (
-    //                 <tr key={uuidv4()}>
-    //                     <td>{i + 1}</td>
-    //                     <td >{date}</td>
-    //                     <td ><Link to={`/details/${id}`}  >{nameEmbroidery}</Link></td>
-    //                     <td >{numberOfEmbroidery}</td>
-    //                     <td>{price}</td>
-    //                     <td><b>{numberOfEmbroidery * price}</b></td>
-    //                     <td><button onClick={(e) => handleEdit(e)} id={id} className="edit-button" >Edit</button>
-    //                         <button onClick={(e) => handleDelete(e)} id={id} className="delete-button" >Delete</button>
-    //                         <button onClick={(e) => handleFinish(e)} id={id} className={`finish-button ${disabledButtons.find((item) => +item === id) ? "disabledButton" : ""}`} disabled={disabledButtons.find((item) => +item === id)} >Uradjeno</button>
-    //                     </td>
-    //                 </tr >
-    //             )
-    //         })
 
-    //     }
-    // })
 
-    const embroideryTable = embroideryForm.flatMap((element) => {
-        if (element[embroideryNames.selectCompany] && element[embroideryNames.selectCompany].length > 0) {
-            return element[embroideryNames.selectCompany].map((item, i) => {
-                const { nameEmbroidery, numberOfEmbroidery, price, id, date } = item;
-                return (
-                    <tr key={uuidv4()}>
-                        <td>{i + 1}</td>
-                        <td>{date}</td>
-                        <td>
-                            <Link to={`/details/${id}`}>{nameEmbroidery}</Link>
-                        </td>
-                        <td>{numberOfEmbroidery}</td>
-                        <td>{price}</td>
-                        <td>
-                            <b>{numberOfEmbroidery * price}</b>
-                        </td>
-                        <td>
-                            <button
-                                onClick={(e) => handleEdit(e)}
-                                id={id}
-                                className="edit-button"
-                            >
-                                Edit
-                            </button>
-                            <button
-                                onClick={(e) => handleDelete(e)}
-                                id={id}
-                                className="delete-button"
-                            >
-                                Delete
-                            </button>
-                            <button
-                                onClick={(e) => handleFinish(e)}
-                                id={id}
-                                className={`finish-button ${disabledButtons.find((item) => item === id)
-                                    ? "disabledButton"
-                                    : ""
-                                    }`}
-                                disabled={disabledButtons.find((item) => +item === id)}
-                            >
-                                Uradjeno
-                            </button>
-                        </td>
-                    </tr>
-                );
-            });
-        }
+
+
+    const embroideryTable = companiesData?.map((element, i) => {
+
+        const { nameEmbroidery, numberOfEmbroidery, price, id, date } = element;
+
+        return (
+            <tr key={uuidv4()}>
+                <td>{i + 1}</td>
+                <td>{date}</td>
+                <td>
+                    <Link to={`/details/${id}`}>{nameEmbroidery}</Link>
+                </td>
+                <td>{numberOfEmbroidery}</td>
+                <td>{price}</td>
+                <td>
+                    <b>{numberOfEmbroidery * price}</b>
+                </td>
+                <td>
+                    <button
+                        onClick={(e) => handleEdit(e)}
+                        id={id}
+                        className="edit-button"
+                    >
+                        Edit
+                    </button>
+                    <button
+                        onClick={(e) => handleDelete(e)}
+                        id={id}
+                        className="delete-button"
+                    >
+                        Delete
+                    </button>
+                    <button
+                        onClick={(e) => handleFinish(e)}
+                        id={id}
+                        className={`finish-button ${finishedWork.find((item) => item.id === id)
+                            ? "disabledButton"
+                            : ""
+                            }`}
+                        disabled={finishedWork.find((item) => item.id === id)}
+                    >
+                        Uradjeno
+                    </button>
+                </td>
+            </tr>
+        );
+
     });
 
 
 
 
+    // let calculateAmount = 0
+    // if (embroideryForm.length > 0 && embroideryFormInput.selectCompany !== "") {
+    //     calculateAmount = embroideryForm.find(item => item[nameCompany])[nameCompany].reduce((sum, item) => sum += item.price * item.numberOfEmbroidery, 0)
+    // }
+    // useEffect(() => {
+    //     setTotalAmount(calculateAmount)
+    // }, [calculateAmount])
 
-
-    let calculateAmount = 0
-    if (embroideryForm.length > 0 && embroideryNames.selectCompany !== "") {
-        calculateAmount = embroideryForm.find(item => item[a])[a].reduce((sum, item) => sum += item.price * item.numberOfEmbroidery, 0)
-    }
-    useEffect(() => {
-        setTotalAmount(calculateAmount)
-    }, [calculateAmount])
-
-
-
+    const calculateAmount = companiesData?.reduce((sum, item) => sum += item.price * item.numberOfEmbroidery, 0)
 
     return (
         <div>
@@ -112,12 +89,12 @@ const Table = ({ embroideryForm, handleEdit, handleDelete, handleFinish, embroid
                         <th>Ukupuno</th>
                         <th>Uredjivanje</th>
                     </tr>
-                    {embroideryTable.length ? (embroideryTable) : null}
+                    {embroideryTable?.length ? (embroideryTable) : null}
 
                 </tbody>
             </table>
 
-            <h1>Ukupan racun : {totalAmount}</h1>
+            <h1>Ukupan racun : {calculateAmount}</h1>
         </div>
     )
 }

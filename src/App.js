@@ -17,16 +17,16 @@ function App() {
   }
   const [embroideryForm, setEmbroideryForm] = useState([])
 
-  const [embroideryNames, setEmbroideryNames] = useState(initialValues)
+  const [embroideryFormInput, setEmbroideryFormInput] = useState(initialValues)
 
 
 
   return (
     <Router>
       <Routes >
-        <Route path="/" element={<Home embroideryForm={embroideryForm} setEmbroideryForm={setEmbroideryForm} embroideryNames={embroideryNames} setEmbroideryNames={setEmbroideryNames} initialValues={initialValues} />} />
+        <Route path="/" element={<Home embroideryForm={embroideryForm} setEmbroideryForm={setEmbroideryForm} embroideryFormInput={embroideryFormInput} setEmbroideryFormInput={setEmbroideryFormInput} initialValues={initialValues} />} />
         <Route path="/signuporsignin" element={<SignUpOrSignIn />} />
-        <Route path="/details/:id" element={<Details embroideryForm={embroideryForm} setEmbroideryForm={setEmbroideryForm} embroideryNames={embroideryNames} />} />
+        <Route path="/details/:id" element={<Details embroideryForm={embroideryForm} setEmbroideryForm={setEmbroideryForm} embroideryFormInput={embroideryFormInput} />} />
       </Routes >
     </Router>
   )
