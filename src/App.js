@@ -11,6 +11,7 @@ function App() {
     nameCompany: "",
     selectCompany: "",
     numberOfEmbroidery: 0,
+    numberOfEmbroideryCompleted: 0,
     price: 0,
     id: null,
     message: []
@@ -26,7 +27,7 @@ function App() {
       <Routes >
         <Route path="/" element={<Home embroideryForm={embroideryForm} setEmbroideryForm={setEmbroideryForm} embroideryFormInput={embroideryFormInput} setEmbroideryFormInput={setEmbroideryFormInput} initialValues={initialValues} />} />
         <Route path="/signuporsignin" element={<SignUpOrSignIn />} />
-        <Route path="/details/:id" element={<Details embroideryForm={embroideryForm} setEmbroideryForm={setEmbroideryForm} embroideryFormInput={embroideryFormInput} />} />
+        <Route path="/details/:id" element={<Details />} />
       </Routes >
     </Router>
   )

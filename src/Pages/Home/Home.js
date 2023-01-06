@@ -11,8 +11,7 @@ import './Home.css';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { db } from "../../Components/Firebase/firebaseConfig"
 import 'firebase/database';
-import { getDatabase, ref, push, set } from "firebase/database";
-import { doc, setDoc, collection, query, getDocs, onSnapshot, addDoc, deleteDoc } from "firebase/firestore";
+import { doc, setDoc, collection, deleteDoc } from "firebase/firestore";
 
 
 import { useCollectionData } from 'react-firebase-hooks/firestore';
@@ -25,7 +24,6 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbro
     const [finishedWork, setFinishedWork] = useState([])
     const [editForm, setEditForm] = useState(false)
     const [modal, setModal] = useState({ modal: false, deletedItem: {} })
-    const [disabledButtons, setDisabledbuttons] = useState([])
     const [companyForm, setCompanyForm] = useState([])
     const [companiesData, setCompaniesData] = useState([])
 
@@ -75,9 +73,6 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbro
 
 
 
-
-
-
     const handleNameChange = (e) => {
         const { name, value } = e.target
         setEmbroideryFormInput({ ...embroideryFormInput, [name]: value })
@@ -85,21 +80,19 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbro
 
     useEffect(() => {
         if (!loading) {
-            setCompaniesData(CompanyData)
+            setCompaniesData(CompanyData.sort((a, b) => new Date(a.date) - new Date(b.date)))
         }
     }, [loading, CompanyData])
 
     useEffect(() => {
         if (!loadingCompleted) {
-            setFinishedWork(CompanyDataCompleted)
+            setFinishedWork(CompanyDataCompleted.sort((a, b) => new Date(a.date) - new Date(b.date)))
+            console.log(CompanyDataCompleted);
+            console.log(finishedWork);
         }
     }, [loadingCompleted, CompanyDataCompleted])
 
-
-    // if (!editForm) {
-    //     console.log("aaaaaa", editForm);
-    // }
-
+    console.log(finishedWork);
 
 
     const handleSubmitForm = async (e) => {
@@ -121,29 +114,20 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbro
         const pathData = `Companies/${selectCompany}/orders/${documentId}`
         const docRef = doc(db, pathData)
 
-        // if (!editForm) {
+
+
 
         await setDoc(docRef, {
             nameEmbroidery: embroideryFormInput.nameEmbroidery,
             numberOfEmbroidery: +embroideryFormInput.numberOfEmbroidery,
+            numberOfEmbroideryCompleted: +embroideryFormInput.numberOfEmbroidery,
             price: +embroideryFormInput.price,
-            message: embroideryFormInput.message,
             id: documentId,
             date: new Date().toLocaleDateString(),
-            finish: false
+            message: []
         })
 
-        console.log(documentId);
 
-        // } else {
-        //     setDoc(docRef, {
-        //         nameEmbroidery: embroideryFormInput.nameEmbroidery
-        //     },
-        //         { numberOfEmbroidery: +embroideryFormInput.numberOfEmbroidery },
-        //         { price: +embroideryFormInput.price },
-
-        //     )
-        // }
 
         setEditForm(false)
 
@@ -159,9 +143,7 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbro
 
 
 
-    const indexOfUser = () => {
-        return embroideryForm.findIndex((item) => Object.keys(item).join("") === embroideryFormInput.selectCompany)
-    }
+
 
 
     const handleEdit = (e) => {
@@ -170,19 +152,10 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbro
 
         let tempObj = companiesData.find(item => item.id === id)
 
-        console.log(tempObj);
         setEditForm(true)
 
         setEmbroideryFormInput(tempObj);
 
-        // const updatedItem = tempObj.find((item) => {
-        //     if (item.id === id) {
-        //         setEmbroideryFormInput(item);
-        //         setEditForm(tempObj.indexOf(item));
-        //         return true;
-        //     }
-        //     return false;
-        // });
     }
 
 
@@ -209,7 +182,6 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbro
 
 
 
-
     const handleFinish = async (e) => {
         let buttonId = e.target.id
 
@@ -224,7 +196,6 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbro
             message: data.message,
             id: data.id,
             date: new Date().toLocaleDateString(),
-            finish: true
         })
 
 
@@ -250,7 +221,7 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbro
                                     <label htmlFor="nameEmbroidery">Naziv Veza</label>
                                     <input type="text" name='nameEmbroidery' value={embroideryFormInput.nameEmbroidery} id="nameEmbroidery" onChange={handleNameChange} />
                                     <label htmlFor="numberOfEmbroidery">Broj Komada</label>
-                                    <input type="number" name='numberOfEmbroidery' value={embroideryFormInput.numberOfEmbroidery} id="numberOfEmbroidery" onChange={handleNameChange} />
+                                    <input type="number" name='numberOfEmbroidery' id="numberOfEmbroidery" value={embroideryFormInput.numberOfEmbroidery} onChange={handleNameChange} />
                                     <label htmlFor="price">Cena</label>
                                     <input type="number" name='price' id="price" step="any" value={embroideryFormInput.price} onChange={handleNameChange} />
 
@@ -258,7 +229,7 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbro
                                 </div>
                             </form>
                         </div >
-                        <Table finishedWork={finishedWork} handleEdit={handleEdit} handleDelete={handleDelete} handleFinish={handleFinish} embroideryFormInput={embroideryFormInput} disabledButtons={disabledButtons} companiesData={companiesData} />
+                        <Table finishedWork={finishedWork} handleEdit={handleEdit} handleDelete={handleDelete} handleFinish={handleFinish} embroideryFormInput={embroideryFormInput} companiesData={companiesData} selectCompany={selectCompany} />
 
                         <FinishedForm finishedWork={finishedWork} />
                     </div >

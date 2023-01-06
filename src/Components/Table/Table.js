@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import "./Table.css"
 const { v4: uuidv4 } = require('uuid');
 
-const Table = ({ finishedWork, handleEdit, handleDelete, handleFinish, embroideryFormInput, companiesData }) => {
+const Table = ({ finishedWork, handleEdit, handleDelete, handleFinish, embroideryFormInput, companiesData, selectCompany }) => {
 
     const [totalAmount, setTotalAmount] = useState(0)
 
@@ -17,16 +17,17 @@ const Table = ({ finishedWork, handleEdit, handleDelete, handleFinish, embroider
 
     const embroideryTable = companiesData?.map((element, i) => {
 
-        const { nameEmbroidery, numberOfEmbroidery, price, id, date } = element;
+        const { nameEmbroidery, numberOfEmbroidery, price, id, date, numberOfEmbroideryCompleted } = element;
 
         return (
             <tr key={uuidv4()}>
                 <td>{i + 1}</td>
                 <td>{date}</td>
                 <td>
-                    <Link to={`/details/${id}`}>{nameEmbroidery}</Link>
+                    <Link to={`/details/${id}`} state={[{ data: companiesData }, { data2: selectCompany }]}>{nameEmbroidery}</Link>
                 </td>
-                <td>{numberOfEmbroidery}</td>
+                <td><b>{numberOfEmbroidery}  {numberOfEmbroideryCompleted !== numberOfEmbroidery ? `/  ${numberOfEmbroideryCompleted}` : null}</b> </td>
+
                 <td>{price}</td>
                 <td>
                     <b>{numberOfEmbroidery * price}</b>

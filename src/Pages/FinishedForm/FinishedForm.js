@@ -16,7 +16,7 @@ const FinishedForm = ({ finishedWork }) => {
                     </tr>
                     {
                         finishedWork.map((item, i) => {
-                            return item.finish ? (
+                            return item ? (
                                 <tr key={item.id}>
                                     <td>{i + 1}</td>
                                     <td>{item.date}</td>

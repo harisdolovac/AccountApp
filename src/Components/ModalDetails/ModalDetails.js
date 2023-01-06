@@ -1,9 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import "./ModalDetails.css"
 
-const ModalDetails = ({ setModalDetails, embroideryForm, setEmbroideryForm, funcToFindMessage }) => {
-    const [numberDecrement, setNumberDecrement] = useState(0)
-    const [numberDecrementInput, setNumberDecrementInput] = useState("")
+import { v4 as uuidv4 } from 'uuid';
+
+
+import { doc, setDoc, collection } from "firebase/firestore";
+import { db } from "../Firebase/firebaseConfig"
+import { useCollectionData } from 'react-firebase-hooks/firestore';
+
+
+const ModalDetails = ({ setModalDetails, detailsEmbroideryForm, selectCompany, id }) => {
+    const [numberDecrementInput, setNumberDecrementInput] = useState(0)
 
     const handleModalDetailsClose = () => {
         setModalDetails(false)
@@ -12,35 +19,33 @@ const ModalDetails = ({ setModalDetails, embroideryForm, setEmbroideryForm, func
 
 
 
-
     const handleSubmitNumberDecrement = (e) => {
         e.preventDefault()
-        setNumberDecrement((prev) => prev = +numberDecrementInput);
-        setNumberDecrementInput("")
 
-    }
+        const pathData = `Companies/${selectCompany}/orders/${id}`
+        const docRef = doc(db, pathData)
+        let newId = uuidv4()
+        const pathDataCompleted = `Companies/${selectCompany}/completed/${newId}`
+        const docRefCompleted = doc(db, pathDataCompleted)
 
 
-    useEffect(() => {
 
-        const newState = [...embroideryForm]
-        funcToFindMessage(newState).numberOfEmbroidery -= 5
-        setEmbroideryForm(newState)
+        let numberCompletedEmb = { numberOfEmbroideryCompleted: detailsEmbroideryForm.numberOfEmbroideryCompleted -= numberDecrementInput }
 
-        if (numberDecrement !== 0) {
-            handleModalDetailsClose()
+        setDoc(docRef, numberCompletedEmb, { merge: true })
+
+        setDoc(docRefCompleted, {
+            nameEmbroidery: detailsEmbroideryForm.nameEmbroidery,
+            numberOfEmbroidery: +numberDecrementInput,
+            price: detailsEmbroideryForm.price,
+            message: detailsEmbroideryForm.message,
+            id: newId,
+            date: new Date().toLocaleDateString(),
         }
-
-
-    }, [numberDecrement]);
-
-
-
-
-
+        )
+        handleModalDetailsClose()
+    }
     return (
-
-
         <div className="modal">
             <div className="modal-content">
                 <div className="modal-header">
@@ -48,17 +53,17 @@ const ModalDetails = ({ setModalDetails, embroideryForm, setEmbroideryForm, func
                     <h2>Modal Title</h2>
                 </div>
                 <div className="modal-body">
-                    <form onSubmit={handleSubmitNumberDecrement}>
-                        <input type="number" className="modal-input" value={numberDecrementInput} onChange={(e) => setNumberDecrementInput(e.target.value)} />
+                    <form onSubmit={(e) => handleSubmitNumberDecrement(e)}>
+                        <input type="number" className="modal-input" value={numberDecrementInput} onChange={(e) => setNumberDecrementInput(+e.target.value)} />
                         <button type='submit' >Submit</button>
                     </form>
                 </div>
                 <div className="modal-footer">
-                    <button onClick={handleModalDetailsClose} >Close</button>
+                    <button onClick={() => handleModalDetailsClose()} >Close</button>
 
                 </div>
             </div>
-        </div>
+        </div >
 
     )
 }
