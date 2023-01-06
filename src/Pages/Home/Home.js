@@ -92,8 +92,8 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbro
         }
     }, [loadingCompleted, CompanyDataCompleted])
 
-    console.log(finishedWork);
-
+    console.log("fin", finishedWork);
+    console.log("com", CompanyData);
 
     const handleSubmitForm = async (e) => {
         e.preventDefault();
@@ -188,10 +188,18 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbro
         const pathData = `Companies/${selectCompany}/completed/`
         const docRef = doc(db, pathData, `${buttonId}`)
 
+        let finishedEmb
+
+
+
         const data = [...companiesData].find(item => item.id === buttonId)
+        console.log("bb");
+        data.numberOfEmbroideryCompleted === data.numberOfEmbroidery ? finishedEmb = data.numberOfEmbroidery : finishedEmb = data.numberOfEmbroideryCompleted
+        console.log("a", finishedEmb);
+        console.log(typeof (finishedEmb));
         await setDoc(docRef, {
             nameEmbroidery: data.nameEmbroidery,
-            numberOfEmbroidery: +data.numberOfEmbroidery,
+            numberOfEmbroidery: finishedEmb,
             price: +data.price,
             message: data.message,
             id: data.id,
