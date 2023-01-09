@@ -68,7 +68,6 @@ const Company = ({ handleSelectCompany, selectCompany }) => {
 
     const handleCompanyInputName = (e) => {
         let names = e.target.value
-        console.log(names);
         if (CompanyName.some((item) => item.nameOfCompany.toLowerCase() === names.toLowerCase())) {
             alert("Ukucali ste postojeci naziv Firme")
             setCompanyNameInput("")

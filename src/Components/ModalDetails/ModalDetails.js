@@ -41,6 +41,7 @@ const ModalDetails = ({ setModalDetails, detailsEmbroideryForm, selectCompany, i
             message: detailsEmbroideryForm.message,
             id: newId,
             date: new Date().toLocaleDateString(),
+            dateSecounds: Math.round(Date.now() / 1000),
         }
         )
         handleModalDetailsClose()

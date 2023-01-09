@@ -11,7 +11,7 @@ import './Home.css';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { db } from "../../Components/Firebase/firebaseConfig"
 import 'firebase/database';
-import { doc, setDoc, collection, deleteDoc } from "firebase/firestore";
+import { doc, setDoc, collection, deleteDoc, orderBy } from "firebase/firestore";
 
 
 import { useCollectionData } from 'react-firebase-hooks/firestore';
@@ -80,19 +80,18 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbro
 
     useEffect(() => {
         if (!loading) {
-            setCompaniesData(CompanyData.sort((a, b) => new Date(a.date) - new Date(b.date)))
+            setCompaniesData(CompanyData)
         }
     }, [loading, CompanyData])
 
     useEffect(() => {
         if (!loadingCompleted) {
-            setFinishedWork(CompanyDataCompleted.sort((a, b) => new Date(a.date) - new Date(b.date)))
+            setFinishedWork(CompanyDataCompleted)
             console.log(CompanyDataCompleted);
             console.log(finishedWork);
         }
     }, [loadingCompleted, CompanyDataCompleted])
 
-    console.log("fin", finishedWork);
     console.log("com", CompanyData);
 
     const handleSubmitForm = async (e) => {
@@ -124,7 +123,9 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbro
             price: +embroideryFormInput.price,
             id: documentId,
             date: new Date().toLocaleDateString(),
-            message: []
+            dateSecounds: Math.round(Date.now() / 1000),
+            message: [],
+            ImageArr: []
         })
 
 
@@ -204,6 +205,7 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbro
             message: data.message,
             id: data.id,
             date: new Date().toLocaleDateString(),
+            dateSecounds: Math.round(Date.now() / 1000),
         })
 
 

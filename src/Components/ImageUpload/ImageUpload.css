@@ -1,0 +1,21 @@
+.uploadBarWrapper {
+    width: 100%;
+    height: 30px;
+    background-color: gray;
+    position: relative;
+}
+
+.uploadBar {
+    position: absolute;
+    height: 30px;
+    bottom: 0;
+    background-color: green;
+    width: 500px;
+
+}
+
+.lettersBar {
+    color: rgb(255, 219, 153);
+    display: inline-block;
+
+}

@@ -5,17 +5,10 @@ const { v4: uuidv4 } = require('uuid');
 
 const Table = ({ finishedWork, handleEdit, handleDelete, handleFinish, embroideryFormInput, companiesData, selectCompany }) => {
 
-    const [totalAmount, setTotalAmount] = useState(0)
-
-    let nameCompany = [embroideryFormInput.selectCompany]
 
 
 
-
-
-
-
-    const embroideryTable = companiesData?.map((element, i) => {
+    const embroideryTable = companiesData.sort((a, b) => a.dateSecounds - b.dateSecounds)?.map((element, i) => {
 
         const { nameEmbroidery, numberOfEmbroidery, price, id, date, numberOfEmbroideryCompleted } = element;
 
@@ -66,14 +59,6 @@ const Table = ({ finishedWork, handleEdit, handleDelete, handleFinish, embroider
 
 
 
-
-    // let calculateAmount = 0
-    // if (embroideryForm.length > 0 && embroideryFormInput.selectCompany !== "") {
-    //     calculateAmount = embroideryForm.find(item => item[nameCompany])[nameCompany].reduce((sum, item) => sum += item.price * item.numberOfEmbroidery, 0)
-    // }
-    // useEffect(() => {
-    //     setTotalAmount(calculateAmount)
-    // }, [calculateAmount])
 
     const calculateAmount = companiesData?.reduce((sum, item) => sum += item.price * item.numberOfEmbroidery, 0)
 

@@ -15,7 +15,7 @@ const FinishedForm = ({ finishedWork }) => {
 
                     </tr>
                     {
-                        finishedWork.map((item, i) => {
+                        finishedWork.sort((a, b) => a.dateSecounds - b.dateSecounds).map((item, i) => {
                             return item ? (
                                 <tr key={item.id}>
                                     <td>{i + 1}</td>
