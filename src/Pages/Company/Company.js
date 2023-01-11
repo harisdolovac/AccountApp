@@ -25,37 +25,6 @@ const Company = ({ handleSelectCompany, selectCompany }) => {
     const [CompanyName] = useCollectionData(queryComp);
 
 
-
-
-
-
-
-    // const submitCompanyForm = (e) => {
-    //     e.preventDefault();
-    //     setTempComp(prev => [...prev, { nameOfCompany: companyNameInput }])
-
-    //     // const { nameCompany } = embroideryFormInput;
-
-    //     // if (companyForm?.some((item) => item.nameOfCompany.toLowerCase() === nameCompany.toLowerCase())) {
-
-    //     //     alert("isti naziv firme ili niste ukucali naziv Firme");
-    //     //     return;
-    //     // }
-    //     // addCompany()
-
-
-    //     // setEmbroideryFormInput(prev => ({ ...prev, selectCompany: nameCompany, nameCompany: "", date: new Date().toLocaleDateString() }));
-    //     // setEmbroideryForm(prev => [...prev, { [nameCompany]: [] }]);
-
-    //     setCompanyNameInput("")
-    // };
-
-
-
-
-
-
-
     const submitCompanyForm = (e) => {
         e.preventDefault();
         if (companyNameInput === "") {

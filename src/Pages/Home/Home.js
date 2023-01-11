@@ -35,7 +35,6 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbro
 
 
 
-
     // useEffect(() => {
     //     const auth = getAuth();
 
@@ -68,7 +67,7 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbro
 
 
 
-
+    console.log(CompanyDataCompleted);
 
 
 
@@ -87,12 +86,11 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbro
     useEffect(() => {
         if (!loadingCompleted) {
             setFinishedWork(CompanyDataCompleted)
-            console.log(CompanyDataCompleted);
-            console.log(finishedWork);
+            // console.log(CompanyDataCompleted);
+            // console.log(finishedWork);
         }
     }, [loadingCompleted, CompanyDataCompleted])
 
-    console.log("com", CompanyData);
 
     const handleSubmitForm = async (e) => {
         e.preventDefault();
@@ -194,10 +192,7 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbro
 
 
         const data = [...companiesData].find(item => item.id === buttonId)
-        console.log("bb");
         data.numberOfEmbroideryCompleted === data.numberOfEmbroidery ? finishedEmb = data.numberOfEmbroidery : finishedEmb = data.numberOfEmbroideryCompleted
-        console.log("a", finishedEmb);
-        console.log(typeof (finishedEmb));
         await setDoc(docRef, {
             nameEmbroidery: data.nameEmbroidery,
             numberOfEmbroidery: finishedEmb,
@@ -207,13 +202,9 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbro
             date: new Date().toLocaleDateString(),
             dateSecounds: Math.round(Date.now() / 1000),
         })
-
-
-
-
-
     }
 
+    console.log(companiesData);
 
 
     return (
@@ -241,7 +232,7 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbro
                         </div >
                         <Table finishedWork={finishedWork} handleEdit={handleEdit} handleDelete={handleDelete} handleFinish={handleFinish} embroideryFormInput={embroideryFormInput} companiesData={companiesData} selectCompany={selectCompany} />
 
-                        <FinishedForm finishedWork={finishedWork} />
+                        <FinishedForm finishedWork={finishedWork} selectCompany={selectCompany} />
                     </div >
                 ) : <Modal modal={modal} handleConfrmDelete={handleConfrmDelete} handleCancleDelete={handleCancleDelete} />
             }

@@ -1,0 +1,33 @@
+.FinisedFormTotal {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: gray;
+}
+
+.FinisedFormTotalText {
+    color: white;
+}
+
+.totalXButton {
+    display: flex;
+    justify-content: space-between;
+}
+
+.totalXButton>button {
+    color: red;
+    background-color: transparent;
+    border-radius: 100%;
+    border: 1px solid red;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.totalXButton>button:hover {
+    color: white;
+    background-color: red;
+
+}

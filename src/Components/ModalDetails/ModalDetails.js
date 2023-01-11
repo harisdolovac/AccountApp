@@ -6,8 +6,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { doc, setDoc, collection } from "firebase/firestore";
 import { db } from "../Firebase/firebaseConfig"
-import { useCollectionData } from 'react-firebase-hooks/firestore';
-
 
 const ModalDetails = ({ setModalDetails, detailsEmbroideryForm, selectCompany, id }) => {
     const [numberDecrementInput, setNumberDecrementInput] = useState(0)
