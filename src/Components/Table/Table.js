@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import "./Table.css"
 const { v4: uuidv4 } = require('uuid');
 
-const Table = ({ finishedWork, handleEdit, handleDelete, handleFinish, embroideryFormInput, companiesData, selectCompany }) => {
+const Table = ({ finishedWork, handleEdit, handleDelete, handleFinish, companiesData, selectCompany }) => {
 
 
 
@@ -79,7 +78,7 @@ const Table = ({ finishedWork, handleEdit, handleDelete, handleFinish, embroider
 
                 </tbody>
             </table>
-
+            <Link to={`/account`} state={[{ data: finishedWork }, { data2: selectCompany }]}>Racuni</Link>
             <h1>Ukupan racun : {calculateAmount}</h1>
         </div>
     )

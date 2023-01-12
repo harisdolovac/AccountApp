@@ -1,96 +1,3 @@
-// import React, { useState, useEffect } from "react";
-// import { v4 as uuidv4 } from 'uuid';
-// import { storage } from "../Firebase/firebaseConfig"
-// import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage"
-
-// import { doc, setDoc } from "firebase/firestore";
-// import { db } from "../Firebase/firebaseConfig"
-
-// const ImageUpload = ({ id, detailsEmbroideryForm, selectCompany }) => {
-//     const [imageList, setImageList] = useState([]);
-//     const [ImageUploadState, setImageUploadState] = useState(null)
-
-//     const imageListRef = ref(storage, "images/")
-//     console.log("ImgUplState", ImageUploadState);
-//     const uploadImage = () => {
-//         if (ImageUploadState === null) return
-
-
-//         const imageRef = ref(storage, `images/${id}`)
-//         uploadBytes(imageRef, ImageUploadState).then(() => {
-//             alert("image uploaded")
-//         })
-
-
-
-//         // setDoc(docRef, { ImageArr: imageList }, { merge: true })
-//     }
-//     // console.log(detailsEmbroideryForm);
-//     // console.log("imageList", imageList);
-//     // console.log(id);
-
-//     useEffect(() => {
-
-//         let newArr = detailsEmbroideryForm.ImageArr.concat(imageList)
-//         if (imageList.length) {
-//             const pathData = `Companies/${selectCompany}/orders/${id}`
-//             const docRef = doc(db, pathData)
-
-//             setDoc(docRef, { ImageArr: newArr }, { merge: true })
-//         }
-
-//     }, [imageList])
-
-
-//     useEffect(() => {
-
-//         listAll(imageListRef).then((res) => {
-//             res.items.forEach((item) => {
-//                 getDownloadURL(item).then((url) => {
-//                     console.log(item);
-//                     setImageList([url])
-//                 })
-//             })
-//         })
-//     }, [])
-
-//     return (
-//         <div>
-//             <h1>Upload and Display Image</h1>
-//             {imageList && (
-//                 <div>
-//                     {
-//                         detailsEmbroideryForm.ImageArr.map((image) => (
-//                             <img key={uuidv4()} alt="not found" width={"200px"} src={image} />
-//                         ))
-//                     }
-//                     <br />
-//                     <button onClick={() => uploadImage()}>Upload</button>
-//                 </div>
-//             )}
-//             <br />
-
-//             <br />
-
-//             <input
-
-//                 type="file"
-//                 name="myImage"
-//                 onChange={(event) => {
-//                     setImageUploadState(event.target.files[0]);
-//                 }}
-//             />
-
-//         </div >
-//     );
-// };
-
-// export default ImageUpload;
-
-
-
-
-
 import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import "./ImageUpload.css"
@@ -102,18 +9,14 @@ import { db } from "../Firebase/firebaseConfig"
 
 const ImageUpload = ({ id, detailsEmbroideryForm, selectCompany }) => {
     const [imageList, setImageList] = useState([]);
-    const [ImageUploadState, setImageUploadState] = useState(null)
+    const [selectedFile, setSelectedFile] = useState();
     const [progress, setProgress] = useState(0);
 
 
-
-
-    const handleLog = () => {
-
-    }
+    console.log(imageList);
+    console.log(detailsEmbroideryForm.ImageArr);
 
     useEffect(() => {
-
         let newArr = detailsEmbroideryForm.ImageArr.concat(imageList)
         if (imageList.length > 0) {
             const pathData = `Companies/${selectCompany}/orders/${id}`
@@ -124,13 +27,16 @@ const ImageUpload = ({ id, detailsEmbroideryForm, selectCompany }) => {
 
     }, [imageList])
 
-    console.log(detailsEmbroideryForm);
+    const changeHandler = (e) => {
+        setSelectedFile(e.target.value);
+    };
 
 
     const formHandler = (e) => {
         e.preventDefault()
         const file = e.target[0].files[0]
         uploadFiles(file);
+        setSelectedFile("Image uploaded successfully")
     }
 
     const uploadFiles = (file) => {
@@ -141,7 +47,7 @@ const ImageUpload = ({ id, detailsEmbroideryForm, selectCompany }) => {
         uploadTask.on("state_changed", (snapshot) => {
             const prog = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
             setProgress(prog)
-        }, (err) => console.log(err),
+        }, (err) => alert(err),
             () => {
                 getDownloadURL(uploadTask.snapshot.ref)
                     .then(url => setImageList(prev => [...prev, url]))
@@ -150,32 +56,28 @@ const ImageUpload = ({ id, detailsEmbroideryForm, selectCompany }) => {
         )
     }
 
-    console.log(progress);
-
     return (
         <div>
-            <h1>Upload and Display Image</h1>
-            <button onClick={() => handleLog()}>Log</button>
-            {imageList && (
-                <div>
-                    {
-                        detailsEmbroideryForm.ImageArr.map((image) => (
-                            <img key={uuidv4()} alt="not found" width={"200px"} src={image} />
-                        ))
-                    }
-                    <br />
 
-                </div>
-            )}
+            <div>
+                {
+                    detailsEmbroideryForm.ImageArr.map((image) => (
+                        <img key={uuidv4()} alt="not found" width={"200px"} src={image} />
+                    ))
+                }
+                <br />
+            </div>
+
             <br />
 
             <br />
             <form onSubmit={formHandler}>
                 <input
+                    onChange={(e) => changeHandler(e)}
                     type="file"
                     name="myImage"
                 />
-
+                <div>{selectedFile}</div>
                 <button type="submit">Upload</button>
             </form>
 

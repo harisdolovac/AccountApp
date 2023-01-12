@@ -4,7 +4,7 @@ import "./ModalDetails.css"
 import { v4 as uuidv4 } from 'uuid';
 
 
-import { doc, setDoc, collection } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { db } from "../Firebase/firebaseConfig"
 
 const ModalDetails = ({ setModalDetails, detailsEmbroideryForm, selectCompany, id }) => {

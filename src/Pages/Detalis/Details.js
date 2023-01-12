@@ -26,19 +26,12 @@ const Detalis = () => {
 
     const conpmaniesData = location.state[0]?.data
     const selectCompany = location.state[1]?.data2
-
     const detailsEmbroideryForm = conpmaniesData?.find(item => item.id === id)
 
 
     const handleDetailsForm = (e) => {
         e.preventDefault()
         setFormDetails(prev => [...prev, textDetails])
-
-
-
-
-
-
         setTextDetails("")
     }
 
@@ -81,11 +74,10 @@ const Detalis = () => {
                                     <textarea type="text" value={textDetails} className='inputDetails' onChange={(e) => handleDetails(e)} />
                                     <button type='submit'>Submit</button>
                                 </form>
-                                <button type='submit' onClick={handleModalDetails} >Uradjeno</button>
+                                <button type='submit' className='buttonCompleted' onClick={handleModalDetails} >Uradjeno</button>
                             </div>
 
                             <div className="rightDetails">
-                                <div className="rightSide">slikA</div>
                                 <ImageUpload id={id} detailsEmbroideryForm={detailsEmbroideryForm} selectCompany={selectCompany} />
                             </div>
                         </div>

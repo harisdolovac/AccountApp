@@ -11,20 +11,31 @@ import './Home.css';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { db } from "../../Components/Firebase/firebaseConfig"
 import 'firebase/database';
-import { doc, setDoc, collection, deleteDoc, orderBy } from "firebase/firestore";
-
-
+import { doc, setDoc, collection, deleteDoc } from "firebase/firestore";
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 
 
-function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbroideryFormInput, initialValues }) {
+function Home() {
+
+    const initialValues = {
+        nameEmbroidery: "",
+        nameCompany: "",
+        selectCompany: "",
+        numberOfEmbroidery: 0,
+        numberOfEmbroideryCompleted: 0,
+        price: 0,
+        id: null,
+        message: []
+    }
+
+    const [embroideryFormInput, setEmbroideryFormInput] = useState(initialValues)
+
 
 
     const [finishedWork, setFinishedWork] = useState([])
     const [editForm, setEditForm] = useState(false)
     const [modal, setModal] = useState({ modal: false, deletedItem: {} })
-    const [companyForm, setCompanyForm] = useState([])
     const [companiesData, setCompaniesData] = useState([])
 
     const [selectCompany, setSelectCompany] = useState()
@@ -57,19 +68,11 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbro
     let queryData = collection(db, `Companies/${selectCompany}/orders`)
 
     const [CompanyData, loading] = useCollectionData(queryData);
+    console.log(CompanyData);
 
     let queryDataCompleted = collection(db, `Companies/${selectCompany}/completed`)
 
     const [CompanyDataCompleted, loadingCompleted] = useCollectionData(queryDataCompleted);
-
-
-
-
-
-
-    console.log(CompanyDataCompleted);
-
-
 
 
     const handleNameChange = (e) => {
@@ -86,8 +89,6 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbro
     useEffect(() => {
         if (!loadingCompleted) {
             setFinishedWork(CompanyDataCompleted)
-            // console.log(CompanyDataCompleted);
-            // console.log(finishedWork);
         }
     }, [loadingCompleted, CompanyDataCompleted])
 
@@ -98,21 +99,14 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbro
             alert("Unesi prvo ime kompanije")
             return
         }
-
         let documentId = uuidv4()
-
         if (editForm) {
             documentId = embroideryFormInput.id
         }
 
-
-        setEmbroideryForm(companiesData)
         const selectFormCompany = { ...initialValues, selectCompany };
         const pathData = `Companies/${selectCompany}/orders/${documentId}`
         const docRef = doc(db, pathData)
-
-
-
 
         await setDoc(docRef, {
             nameEmbroidery: embroideryFormInput.nameEmbroidery,
@@ -125,13 +119,8 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbro
             message: [],
             ImageArr: []
         })
-
-
-
         setEditForm(false)
-
         setEmbroideryFormInput(selectFormCompany)
-
     };
 
 
@@ -139,22 +128,11 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbro
         setSelectCompany(e.target.value)
     }
 
-
-
-
-
-
-
     const handleEdit = (e) => {
         let id = e.target.id
-
-
         let tempObj = companiesData.find(item => item.id === id)
-
         setEditForm(true)
-
         setEmbroideryFormInput(tempObj);
-
     }
 
 
@@ -162,12 +140,8 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbro
 
     const handleDelete = (e) => {
         let itemToBeDeleted = companiesData.filter((item) => item.id === e.target.id)
-
-
         console.log(itemToBeDeleted);
         setModal(prev => ({ ...prev, modal: true, deletedItem: itemToBeDeleted[0] }))
-
-
     }
 
 
@@ -183,14 +157,9 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbro
 
     const handleFinish = async (e) => {
         let buttonId = e.target.id
-
         const pathData = `Companies/${selectCompany}/completed/`
         const docRef = doc(db, pathData, `${buttonId}`)
-
         let finishedEmb
-
-
-
         const data = [...companiesData].find(item => item.id === buttonId)
         data.numberOfEmbroideryCompleted === data.numberOfEmbroidery ? finishedEmb = data.numberOfEmbroidery : finishedEmb = data.numberOfEmbroideryCompleted
         await setDoc(docRef, {
@@ -204,35 +173,26 @@ function Home({ embroideryForm, setEmbroideryForm, embroideryFormInput, setEmbro
         })
     }
 
-    console.log(companiesData);
-
-
     return (
         <>
             <Company handleSelectCompany={handleSelectCompany} selectCompany={selectCompany} />
             {!modal.modal ?
                 (
                     <div className="Home">
-                        <h1>korisnik je:  {currentUser}</h1>
                         <div className="homeWrapper">
-
                             <form onSubmit={handleSubmitForm}>
                                 <div className='formWrapper'>
-
                                     <label htmlFor="nameEmbroidery">Naziv Veza</label>
                                     <input type="text" name='nameEmbroidery' value={embroideryFormInput.nameEmbroidery} id="nameEmbroidery" onChange={handleNameChange} />
                                     <label htmlFor="numberOfEmbroidery">Broj Komada</label>
                                     <input type="number" name='numberOfEmbroidery' id="numberOfEmbroidery" value={embroideryFormInput.numberOfEmbroidery} onChange={handleNameChange} />
                                     <label htmlFor="price">Cena</label>
                                     <input type="number" name='price' id="price" step="any" value={embroideryFormInput.price} onChange={handleNameChange} />
-
                                     <button type='submit'>Submit</button>
                                 </div>
                             </form>
                         </div >
-                        <Table finishedWork={finishedWork} handleEdit={handleEdit} handleDelete={handleDelete} handleFinish={handleFinish} embroideryFormInput={embroideryFormInput} companiesData={companiesData} selectCompany={selectCompany} />
-
-                        <FinishedForm finishedWork={finishedWork} selectCompany={selectCompany} />
+                        <Table finishedWork={finishedWork} handleEdit={handleEdit} handleDelete={handleDelete} handleFinish={handleFinish} companiesData={companiesData} selectCompany={selectCompany} />
                     </div >
                 ) : <Modal modal={modal} handleConfrmDelete={handleConfrmDelete} handleCancleDelete={handleCancleDelete} />
             }

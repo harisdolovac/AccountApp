@@ -32,3 +32,11 @@
     width: 99%;
     height: 30%;
 }
+
+.buttonCompleted {
+    height: 25px;
+    width: 100%;
+    cursor: pointer;
+    background-color: red;
+
+}
