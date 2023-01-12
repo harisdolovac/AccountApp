@@ -14,7 +14,7 @@ const Table = ({ finishedWork, handleEdit, handleDelete, handleFinish, companies
         return (
             <tr key={uuidv4()}>
                 <td>{i + 1}</td>
-                <td>{date}</td>
+                <td >{date}</td>
                 <td>
                     <Link to={`/details/${id}`} state={[{ data: companiesData }, { data2: selectCompany }]}>{nameEmbroidery}</Link>
                 </td>
@@ -48,7 +48,7 @@ const Table = ({ finishedWork, handleEdit, handleDelete, handleFinish, companies
                             }`}
                         disabled={finishedWork.find((item) => item.id === id)}
                     >
-                        Uradjeno
+                        Done
                     </button>
                 </td>
             </tr>
@@ -66,20 +66,20 @@ const Table = ({ finishedWork, handleEdit, handleDelete, handleFinish, companies
             <table className='table_App'>
                 <tbody>
                     <tr>
-                        <th>Br1.</th>
+                        <th>Br</th>
                         <th>Datum</th>
                         <th>Naziv Veza</th>
-                        <th>Broj Komada</th>
+                        <th>Broj Kom</th>
                         <th>Cena</th>
-                        <th>Ukupuno</th>
-                        <th>Uredjivanje</th>
+                        <th>Total</th>
+                        <th>Uredi</th>
                     </tr>
                     {embroideryTable?.length ? (embroideryTable) : null}
 
                 </tbody>
             </table>
-            <Link to={`/account`} state={[{ data: finishedWork }, { data2: selectCompany }]}>Racuni</Link>
-            <h1>Ukupan racun : {calculateAmount}</h1>
+            <h1>Ukupan
+                <Link to={`/account`} state={[{ data: finishedWork }, { data2: selectCompany }]} style={{ color: "red", textDecorationLine: "none" }}> Racun</Link>: {calculateAmount}</h1>
         </div>
     )
 }

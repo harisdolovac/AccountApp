@@ -1,16 +1,5 @@
-/* .Home {
-    background-color: whitesmoke;
-    margin: 0;
-} */
-
 .homeWrapper {
-    margin: 35px;
-}
-
-.formWrapper {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
+    margin: 35px 0 35px 0;
 }
 
 label,
@@ -21,16 +10,13 @@ input {
 
 
 form {
-
     width: 90%;
     margin: 0 auto;
     background-color: #fafafa;
     border: 1px solid #ccc;
     border-radius: 5px;
-    /* padding: 20px; */
 }
 
-/* Style the form labels */
 form label {
     display: block;
     margin: 10px;
@@ -39,7 +25,6 @@ form label {
     color: #444;
 }
 
-/* Style the form input fields */
 form input {
     margin-left: 2px;
     width: 90%;
@@ -52,6 +37,10 @@ form input {
 }
 
 
+.selectCompany {
+    width: 100%;
+    height: 30px;
+}
 
 form button[type="submit"] {
     width: 100%;
@@ -75,18 +64,23 @@ form button[type="submit"]:hover {
 
     form label {
 
-        font-size: 16px;
+        font-size: 12px;
     }
 
     form input[type="text"],
     form input[type="number"],
     form input[type="password"] {
         /* Reduce the font size of the input fields on small screens */
-        font-size: 14px;
+        font-size: 19px;
+        color: #444;
     }
 
     form input[type="submit"] {
         /* Reduce the font size of the submit button on small screens */
         font-size: 16px;
+    }
+
+    label {
+        color: red;
     }
 }

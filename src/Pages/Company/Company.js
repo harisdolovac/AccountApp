@@ -7,11 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 const Company = ({ handleSelectCompany, selectCompany }) => {
-
-
     const [companyNameInput, setCompanyNameInput] = useState("")
-
-
 
     const addCompany = async () => {
         const docRefComp = doc(db, 'Companies', companyNameInput)
@@ -52,7 +48,7 @@ const Company = ({ handleSelectCompany, selectCompany }) => {
             <h1>Ime firme:{selectCompany}</h1>
             <form onSubmit={(e) => submitCompanyForm(e)}>
                 <label htmlFor="company">
-                    <select id="company" onChange={(e) => handleSelectCompany(e)}>
+                    <select id="company" onChange={(e) => handleSelectCompany(e)} className="selectCompany">
                         {CompanyName?.map((company) => (
                             <option key={company.id}  >{company.nameOfCompany}</option>
                         ))}

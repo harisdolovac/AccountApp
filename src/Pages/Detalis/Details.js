@@ -18,9 +18,6 @@ const Detalis = () => {
     const handleDetails = (e) => {
         setTextDetails(e.target.value)
     }
-
-
-
     const { id } = useParams();
     const location = useLocation()
 
@@ -55,16 +52,17 @@ const Detalis = () => {
 
 
     return (
-        <>
+        <div className='detailsWrapper'>
             {!modalDetails ? (
                 <>
-                    <button onClick={() => navigate(-1)} >Home</button>
                     <div className='details'>
-                        <div className="detailsWrapper">
+                        <button onClick={() => navigate(-1)} className='buttonCompleted' >Home</button>
+
+                        <div className="detailWrapper">
                             <div className="leftDetails">
-                                <div className="leftSide">Ime Veza: {detailsEmbroideryForm.nameEmbroidery}</div>
-                                <div className="leftSide">Broj komada: {detailsEmbroideryForm.numberOfEmbroidery} / {detailsEmbroideryForm.numberOfEmbroideryCompleted} </div>
-                                <div className="leftSide">Cena: {detailsEmbroideryForm.price} </div>
+                                <div >Naziv Veza: {detailsEmbroideryForm.nameEmbroidery}</div>
+                                <div >Broj komada: {detailsEmbroideryForm.numberOfEmbroidery} / {detailsEmbroideryForm.numberOfEmbroideryCompleted} </div>
+                                <div >Cena: {detailsEmbroideryForm.price} </div>
                                 <p>Napomena:</p>
                                 {
                                     detailsEmbroideryForm["message"].map((item) => <p key={uuidv4()} >{item}</p>)
@@ -74,12 +72,11 @@ const Detalis = () => {
                                     <textarea type="text" value={textDetails} className='inputDetails' onChange={(e) => handleDetails(e)} />
                                     <button type='submit'>Submit</button>
                                 </form>
-                                <button type='submit' className='buttonCompleted' onClick={handleModalDetails} >Uradjeno</button>
+                                <button type='submit' className='buttonCompleted' onClick={handleModalDetails} >Done</button>
                             </div>
-
-                            <div className="rightDetails">
-                                <ImageUpload id={id} detailsEmbroideryForm={detailsEmbroideryForm} selectCompany={selectCompany} />
-                            </div>
+                        </div>
+                        <div className="rightDetails">
+                            <ImageUpload id={id} detailsEmbroideryForm={detailsEmbroideryForm} selectCompany={selectCompany} />
                         </div>
 
                     </div>
@@ -89,7 +86,7 @@ const Detalis = () => {
 
             )
             }
-        </>
+        </div>
 
     )
 }

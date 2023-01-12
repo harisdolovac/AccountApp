@@ -75,19 +75,19 @@ const FinishedForm = () => {
 
     return (
         <div>
-            <button onClick={() => navigate(-1)} >Home</button>
+            <button onClick={() => navigate(-1)} className='buttonCompleted' >Home</button>
             {Object.values(monthData).map(({ month, finishedWork }) => (
                 <div key={month}>
                     <h1>{months[month - 1]}</h1>
                     <table className="table_App">
                         <thead>
                             <tr>
-                                <th>Br.</th>
+                                <th>Br</th>
                                 <th>Datum</th>
                                 <th>Naziv Veza</th>
                                 <th>Broj Komada</th>
                                 <th>Cena</th>
-                                <th onClick={() => setHideDelete(!hideDelete)} >Ukupuno</th>
+                                <th onClick={() => setHideDelete(!hideDelete)} >Total</th>
                             </tr>
                         </thead>
                         <tbody>

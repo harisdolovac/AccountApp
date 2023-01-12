@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Modal from '../../Components/Modal/Modal';
 import Table from '../../Components/Table/Table';
-import FinishedForm from '../FinishedForm/FinishedForm';
 import Company from '../Company/Company';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -39,7 +38,6 @@ function Home() {
     const [companiesData, setCompaniesData] = useState([])
 
     const [selectCompany, setSelectCompany] = useState()
-
     const [currentUser, setCurrentUser] = useState("");
 
 
@@ -92,6 +90,7 @@ function Home() {
         }
     }, [loadingCompleted, CompanyDataCompleted])
 
+    const shortenDate = () => new Date().toLocaleDateString().split("/").map((item) => item.length > 3 ? item.slice(2) : item).join("/")
 
     const handleSubmitForm = async (e) => {
         e.preventDefault();
@@ -114,7 +113,7 @@ function Home() {
             numberOfEmbroideryCompleted: +embroideryFormInput.numberOfEmbroidery,
             price: +embroideryFormInput.price,
             id: documentId,
-            date: new Date().toLocaleDateString(),
+            date: shortenDate(),
             dateSecounds: Math.round(Date.now() / 1000),
             message: [],
             ImageArr: []
@@ -168,32 +167,34 @@ function Home() {
             price: +data.price,
             message: data.message,
             id: data.id,
-            date: new Date().toLocaleDateString(),
+            date: shortenDate(),
             dateSecounds: Math.round(Date.now() / 1000),
         })
     }
 
     return (
         <>
-            <Company handleSelectCompany={handleSelectCompany} selectCompany={selectCompany} />
             {!modal.modal ?
                 (
-                    <div className="Home">
+                    <>
+                        <Company handleSelectCompany={handleSelectCompany} selectCompany={selectCompany} />
+
                         <div className="homeWrapper">
                             <form onSubmit={handleSubmitForm}>
-                                <div className='formWrapper'>
-                                    <label htmlFor="nameEmbroidery">Naziv Veza</label>
-                                    <input type="text" name='nameEmbroidery' value={embroideryFormInput.nameEmbroidery} id="nameEmbroidery" onChange={handleNameChange} />
-                                    <label htmlFor="numberOfEmbroidery">Broj Komada</label>
-                                    <input type="number" name='numberOfEmbroidery' id="numberOfEmbroidery" value={embroideryFormInput.numberOfEmbroidery} onChange={handleNameChange} />
-                                    <label htmlFor="price">Cena</label>
-                                    <input type="number" name='price' id="price" step="any" value={embroideryFormInput.price} onChange={handleNameChange} />
-                                    <button type='submit'>Submit</button>
-                                </div>
+
+                                <label htmlFor="nameEmbroidery">Naziv Veza</label>
+                                <input type="text" name='nameEmbroidery' value={embroideryFormInput.nameEmbroidery} id="nameEmbroidery" onChange={handleNameChange} />
+                                <label htmlFor="numberOfEmbroidery">Broj Komada</label>
+                                <input type="number" name='numberOfEmbroidery' id="numberOfEmbroidery" value={embroideryFormInput.numberOfEmbroidery} onChange={handleNameChange} />
+                                <label htmlFor="price">Cena</label>
+                                <input type="number" name='price' id="price" step="any" value={embroideryFormInput.price} onChange={handleNameChange} />
+                                <button type='submit'>Submit</button>
+
                             </form>
                         </div >
                         <Table finishedWork={finishedWork} handleEdit={handleEdit} handleDelete={handleDelete} handleFinish={handleFinish} companiesData={companiesData} selectCompany={selectCompany} />
-                    </div >
+
+                    </>
                 ) : <Modal modal={modal} handleConfrmDelete={handleConfrmDelete} handleCancleDelete={handleCancleDelete} />
             }
         </>

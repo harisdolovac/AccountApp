@@ -23,7 +23,6 @@ tr:nth-child(even) {
 }
 
 tr:hover {
-    /* Add a hover effect to the rows */
     background-color: #876df2;
 }
 
