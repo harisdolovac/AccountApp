@@ -13,9 +13,6 @@ const ImageUpload = ({ id, detailsEmbroideryForm, selectCompany }) => {
     const [progress, setProgress] = useState(0);
 
 
-    console.log(imageList);
-    console.log(detailsEmbroideryForm.ImageArr);
-
     useEffect(() => {
         let newArr = detailsEmbroideryForm.ImageArr.concat(imageList)
         if (imageList.length > 0) {

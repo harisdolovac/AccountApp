@@ -1,7 +1,5 @@
 .details {
-
     display: flex;
-    /* justify-content: space-between; */
     height: 100vh;
     align-items: center;
     border: 5px solid black;
@@ -9,28 +7,12 @@
 }
 
 .detailsWrapper {
-    /* width: 100%; */
-    /* height: 100%; */
-
     display: flex;
     flex-direction: column;
-
     min-height: 100vh;
-
 }
 
-.leftDetails {
-    /* min-height: 100vh; */
-    /* width: 50%; */
-    /* border: 2px solid black; */
-    height: 100%;
-}
 
-.rightDetails {
-    /* width: 50%; */
-    /* height: 100%; */
-    /* border: 2px solid black; */
-}
 
 .inputDetails {
     width: 99%;

@@ -19,6 +19,12 @@ const FinishedForm = () => {
     const finishedWork = location.state[0]?.data
     const selectCompany = location.state[1]?.data2
 
+
+    let queryDataPaid = collection(db, `Companies/${selectCompany}/Paid`)
+
+    const [CompanyDataPaid, loadingPaid] = useCollectionData(queryDataPaid);
+
+
     const monthData = [...finishedWork]
         .reduce((acc, item) => {
             const month = +item.date.split("/")[0];
@@ -38,16 +44,25 @@ const FinishedForm = () => {
 
     const handleDeleteFinishedForm = (e) => {
         const id = e.target.id
-        console.log(id);
         deleteDoc(doc(db, `Companies/${selectCompany}/completed/`, `${id}`));
     }
     const handlePayment = (e) => {
         e.preventDefault()
         setHideDelete(!hideDelete)
-        setTotalPay([...CompanyDataPaid[0].paidTotal, pay])
+
+
+
+
+
+        if (CompanyDataPaid && CompanyDataPaid.length > 0) {
+            console.log("ASSDF");
+            setTotalPay([...CompanyDataPaid[0].paidTotal, pay])
+        }
     }
 
-    console.log(totalPayFirebase);
+
+
+    console.log(CompanyDataPaid);
 
     useEffect(() => {
 
@@ -60,11 +75,8 @@ const FinishedForm = () => {
     }, [totalPay])
 
 
+    console.log(totalPay, "totalPay");
 
-    let queryDataPaid = collection(db, `Companies/${selectCompany}/Paid`)
-
-    const [CompanyDataPaid, loadingPaid] = useCollectionData(queryDataPaid);
-    console.log(CompanyDataPaid);
     useEffect(() => {
         if (CompanyDataPaid && CompanyDataPaid.length) {
             setTotalPayFirebase(CompanyDataPaid[0].paidTotal)
@@ -72,6 +84,9 @@ const FinishedForm = () => {
     }, [loadingPaid, CompanyDataPaid])
 
     const navigate = useNavigate();
+    console.log(totalPayFirebase);
+    console.log(CompanyDataPaid);
+    console.log(pay);
 
     return (
         <div>
@@ -83,9 +98,9 @@ const FinishedForm = () => {
                         <thead>
                             <tr>
                                 <th>Br</th>
-                                <th>Datum</th>
+                                <th className='hideDate'>Datum</th>
                                 <th>Naziv Veza</th>
-                                <th>Broj Komada</th>
+                                <th>Broj Kom.</th>
                                 <th>Cena</th>
                                 <th onClick={() => setHideDelete(!hideDelete)} >Total</th>
                             </tr>
@@ -96,7 +111,7 @@ const FinishedForm = () => {
                                 .map((item, i) => (
                                     <tr key={item.id}>
                                         <td>{i + 1}</td>
-                                        <td>{item.date}</td>
+                                        <td className='hideDate'>{item.date}</td>
                                         <td>{item.nameEmbroidery}</td>
                                         <td>{item.numberOfEmbroidery}</td>
                                         <td>{item.price}</td>
@@ -116,14 +131,14 @@ const FinishedForm = () => {
                     <br />
                 </div>
             ))}
-            <div className="FinisedFormTotal" >
-                <h4 className="FinisedFormTotalText">Ukupuno : {finishedWork.reduce((sum, item) => sum += item.numberOfEmbroidery * item.price, 0)}/</h4>
+            <div className='FinisedFormTotalPaid' >
+                <h4 className="">Ukupuno : {finishedWork.reduce((sum, item) => sum += item.numberOfEmbroidery * item.price, 0)}/</h4>
                 <h4>Uplaceno : {totalPayFirebase.reduce((sum, item) => sum + item, 0)}</h4>
-                {hideDelete ? (<form onSubmit={(e) => handlePayment(e)} style={{ marginTop: "145px" }} >
-                    <input type="number" onChange={(e) => SetPay(+e.target.value)} />
-                    <button type='submit'>Submit</button>
-                </form>) : null}
             </div>
+            {hideDelete ? (<form onSubmit={(e) => handlePayment(e)}  >
+                <input type="number" onChange={(e) => SetPay(+e.target.value)} />
+                <button type='submit'>Submit</button>
+            </form>) : null}
 
 
         </div>

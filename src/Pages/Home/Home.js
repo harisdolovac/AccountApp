@@ -66,7 +66,7 @@ function Home() {
     let queryData = collection(db, `Companies/${selectCompany}/orders`)
 
     const [CompanyData, loading] = useCollectionData(queryData);
-    console.log(CompanyData);
+
 
     let queryDataCompleted = collection(db, `Companies/${selectCompany}/completed`)
 
@@ -91,7 +91,7 @@ function Home() {
     }, [loadingCompleted, CompanyDataCompleted])
 
     const shortenDate = () => new Date().toLocaleDateString().split("/").map((item) => item.length > 3 ? item.slice(2) : item).join("/")
-
+    console.log(shortenDate());
     const handleSubmitForm = async (e) => {
         e.preventDefault();
         if (!selectCompany) {
@@ -139,7 +139,6 @@ function Home() {
 
     const handleDelete = (e) => {
         let itemToBeDeleted = companiesData.filter((item) => item.id === e.target.id)
-        console.log(itemToBeDeleted);
         setModal(prev => ({ ...prev, modal: true, deletedItem: itemToBeDeleted[0] }))
     }
 
