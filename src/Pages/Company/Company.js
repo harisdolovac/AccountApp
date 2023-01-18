@@ -61,4 +61,3 @@ const Company = ({ handleSelectCompany, selectCompany }) => {
 }
 
 export default Company
-

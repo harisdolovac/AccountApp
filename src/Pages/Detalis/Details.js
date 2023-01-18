@@ -32,9 +32,8 @@ const Detalis = () => {
         setTextDetails("")
     }
 
+    let newArr = detailsEmbroideryForm.message.concat(FormDetails)
     useEffect(() => {
-
-        let newArr = detailsEmbroideryForm.message.concat(FormDetails)
         if (FormDetails.length) {
             const pathData = `Companies/${selectCompany}/orders/${id}`
             const docRef = doc(db, pathData)
@@ -50,7 +49,6 @@ const Detalis = () => {
     }
     const navigate = useNavigate();
 
-
     return (
         <div className='detailsWrapper'>
             {!modalDetails ? (
@@ -65,7 +63,7 @@ const Detalis = () => {
                                 <div >Cena: {detailsEmbroideryForm.price} </div>
                                 <p>Napomena:</p>
                                 {
-                                    detailsEmbroideryForm["message"].map((item) => <p key={uuidv4()} >{item}</p>)
+                                    newArr.map((item) => <p key={uuidv4()} >{item}</p>)
                                 }
 
                                 <form onSubmit={(e) => handleDetailsForm(e)}>

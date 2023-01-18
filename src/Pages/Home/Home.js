@@ -3,8 +3,6 @@ import Modal from '../../Components/Modal/Modal';
 import Table from '../../Components/Table/Table';
 import Company from '../Company/Company';
 import { v4 as uuidv4 } from 'uuid';
-
-
 import './Home.css';
 
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -16,7 +14,6 @@ import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 
 function Home() {
-
     const initialValues = {
         nameEmbroidery: "",
         nameCompany: "",
@@ -72,6 +69,7 @@ function Home() {
 
     const [CompanyDataCompleted, loadingCompleted] = useCollectionData(queryDataCompleted);
 
+    console.log(selectCompany, companiesData, finishedWork);
 
     const handleNameChange = (e) => {
         const { name, value } = e.target
@@ -91,7 +89,6 @@ function Home() {
     }, [loadingCompleted, CompanyDataCompleted])
 
     const shortenDate = () => new Date().toLocaleDateString().split("/").map((item) => item.length > 3 ? item.slice(2) : item).join("/")
-    console.log(shortenDate());
     const handleSubmitForm = async (e) => {
         e.preventDefault();
         if (!selectCompany) {

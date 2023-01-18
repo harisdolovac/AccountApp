@@ -21,11 +21,14 @@ const FinishedForm = () => {
 
 
     let queryDataPaid = collection(db, `Companies/${selectCompany}/Paid`)
-
     const [CompanyDataPaid, loadingPaid] = useCollectionData(queryDataPaid);
 
+    let queryDataCompleted = collection(db, `Companies/${selectCompany}/completed`)
+    const [CompanyDataCompleted] = useCollectionData(queryDataCompleted);
 
-    const monthData = [...finishedWork]
+
+
+    const monthData = finishedWork
         .reduce((acc, item) => {
             const month = +item.date.split("/")[0];
             if (!acc[month]) {
@@ -46,36 +49,26 @@ const FinishedForm = () => {
         const id = e.target.id
         deleteDoc(doc(db, `Companies/${selectCompany}/completed/`, `${id}`));
     }
-    const handlePayment = (e) => {
+    const handleSubmitPayment = (e) => {
         e.preventDefault()
         setHideDelete(!hideDelete)
 
-
-
-
-
-        if (CompanyDataPaid && CompanyDataPaid.length > 0) {
-            console.log("ASSDF");
+        if (CompanyDataPaid.length) {
             setTotalPay([...CompanyDataPaid[0].paidTotal, pay])
+        } else {
+            setTotalPay([pay])
         }
     }
 
 
-
-    console.log(CompanyDataPaid);
-
     useEffect(() => {
-
-
         const pathDataPaid = `Companies/${selectCompany}/Paid/Paid${selectCompany}`
         const docRefPayed = doc(db, pathDataPaid)
         if (totalPay.length > 0) {
+            console.log("totalPay se promenio");
             setDoc(docRefPayed, { paidTotal: totalPay }, { merge: true })
         }
     }, [totalPay])
-
-
-    console.log(totalPay, "totalPay");
 
     useEffect(() => {
         if (CompanyDataPaid && CompanyDataPaid.length) {
@@ -84,10 +77,11 @@ const FinishedForm = () => {
     }, [loadingPaid, CompanyDataPaid])
 
     const navigate = useNavigate();
-    console.log(totalPayFirebase);
-    console.log(CompanyDataPaid);
-    console.log(pay);
 
+
+    const total = finishedWork.reduce((sum, item) => sum += item.numberOfEmbroidery * item.price, 0)
+    const paid = totalPayFirebase.reduce((sum, item) => sum + item, 0)
+    const remaining = total - paid
     return (
         <div>
             <button onClick={() => navigate(-1)} className='buttonCompleted' >Home</button>
@@ -102,12 +96,11 @@ const FinishedForm = () => {
                                 <th>Naziv Veza</th>
                                 <th>Broj Kom.</th>
                                 <th>Cena</th>
-                                <th onClick={() => setHideDelete(!hideDelete)} >Total</th>
+                                <th onClick={() => setHideDelete(!hideDelete)} style={{ cursor: "pointer" }}>Total</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {finishedWork
-                                .sort((a, b) => a.dateSecounds - b.dateSecounds)
+                            {CompanyDataCompleted?.sort((a, b) => a.dateSecounds - b.dateSecounds)
                                 .map((item, i) => (
                                     <tr key={item.id}>
                                         <td>{i + 1}</td>
@@ -132,10 +125,11 @@ const FinishedForm = () => {
                 </div>
             ))}
             <div className='FinisedFormTotalPaid' >
-                <h4 className="">Ukupuno : {finishedWork.reduce((sum, item) => sum += item.numberOfEmbroidery * item.price, 0)}/</h4>
-                <h4>Uplaceno : {totalPayFirebase.reduce((sum, item) => sum + item, 0)}</h4>
+                <h4 className="">Ukupuno : ${total} / </h4>
+                <h4 style={{ margin: "13px" }} > Uplaceno : {paid}  </h4>
+                <h4>/ Ostalo : {remaining}</h4>
             </div>
-            {hideDelete ? (<form onSubmit={(e) => handlePayment(e)}  >
+            {hideDelete ? (<form onSubmit={(e) => handleSubmitPayment(e)}  >
                 <input type="number" onChange={(e) => SetPay(+e.target.value)} />
                 <button type='submit'>Submit</button>
             </form>) : null}
